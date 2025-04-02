@@ -1,47 +1,53 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calculadora de Preço</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            margin: 50px;
-        }
-        input, button {
-            margin: 10px;
-            padding: 10px;
-            font-size: 16px;
-        }
-    </style>
-</head>
-<body>
-    <h2>Calculadora de Preço</h2>
-    <label for="custo">Custo do Produto:</label>
-    <input type="number" id="custo" placeholder="Digite o custo">
+import streamlit as st
+
+def calcular_preco(custo):
+    # Faixas de custo definidas
+    precos = [
+        (5, 18), (10, 35), (20, 67), (50, 167), (100, 247),
+        (200, 387), (400, 467), (1000, 1387), (3000, 4087),
+        (7000, 8887), (10000, 12287)
+    ]
     
-    <label for="margem">Margem de Lucro (%):</label>
-    <input type="number" id="margem" placeholder="Digite a margem">
-
-    <button onclick="calcularPreco()">Calcular</button>
-
-    <h3 id="resultado"></h3>
-
-    <script>
-        function calcularPreco() {
-            let custo = parseFloat(document.getElementById('custo').value);
-            let margem = parseFloat(document.getElementById('margem').value);
+    for i in range(len(precos) - 1):
+        if precos[i][0] <= custo < precos[i + 1][0]:
+            custo_inicial, preco_inicial = precos[i]
+            custo_final, preco_final = precos[i + 1]
             
-            if (isNaN(custo) || isNaN(margem)) {
-                alert("Por favor, insira valores válidos.");
-                return;
-            }
+            # Interpolação linear
+            margem = ((preco_final - preco_inicial) / (custo_final - custo_inicial))
+            preco_sugerido = preco_inicial + margem * (custo - custo_inicial)
+            
+            # Cálculo da margem percentual
+            margem_percentual = ((preco_sugerido - custo) / custo) * 100
+            
+            # Aplicar redução de 10% na margem percentual para tabela reduzida
+            margem_reduzida_percentual = margem_percentual * 0.9
+            preco_reduzido = custo * (1 + margem_reduzida_percentual / 100)
+            
+            # Arredondamento para terminar em 7
+            preco_sugerido = round(preco_sugerido / 10) * 10 + 7
+            preco_reduzido = round(preco_reduzido / 10) * 10 + 7
+            
+            return preco_sugerido, preco_reduzido, margem_percentual, margem_reduzida_percentual
+    
+    return None, None, None, None
 
-            let precoVenda = custo / (1 - margem / 100);
-            document.getElementById('resultado').innerText = "Preço de Venda: R$ " + precoVenda.toFixed(2);
-        }
-    </script>
-</body>
-</html>
+st.title("Calculadora de Preços Adaptativa")
+custo = st.number_input("Digite o custo do produto (R$):", min_value=0.0, step=0.01)
+
+# Entrada para percentual manual
+percentual_manual = st.number_input("Digite a porcentagem desejada (%):", min_value=0.0, step=0.1)
+
+if custo > 0:
+    preco_cheio, preco_reduzido, margem_cheia, margem_reduzida = calcular_preco(custo)
+    if preco_cheio:
+        st.write(f"### Preço Cheio: R$ {preco_cheio:.2f} ({margem_cheia:.2f}% de margem)")
+        st.write(f"### Preço Reduzido: R$ {preco_reduzido:.2f} ({margem_reduzida:.2f}% de margem)")
+    else:
+        st.write("Custo fora da faixa configurada.")
+    
+    # Cálculo do preço com porcentagem personalizada
+    if percentual_manual > 0:
+        preco_manual = custo * (1 + percentual_manual / 100)
+        preco_manual = round(preco_manual / 10) * 10 + 7
+        st.write(f"### Preço com {percentual_manual:.2f}% de margem: R$ {preco_manual:.2f}")
