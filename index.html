@@ -3,23 +3,67 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calculadora de Preços</title>
+    <title>Calculadora de Preços - Liderauto</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #000;
+            color: #fff;
+            text-align: center;
+            padding: 20px;
+        }
+        .container {
+            max-width: 400px;
+            margin: auto;
+            background-color: #111;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(255, 165, 0, 0.7);
+        }
+        h2 {
+            color: #FFA500;
+        }
+        label {
+            display: block;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+        input {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #FFA500;
+            border-radius: 5px;
+            background-color: #222;
+            color: #fff;
+            font-size: 16px;
+        }
+        p {
+            font-size: 18px;
+            margin-top: 10px;
+        }
+        .logo {
+            width: 150px;
+            margin-bottom: 20px;
+        }
+    </style>
 </head>
 <body>
-    <h2>Calculadora de Preços</h2>
-    
-    <label for="custo">Digite o custo do produto (R$):</label>
-    <input type="number" id="custo" oninput="calcular()">
+    <div class="container">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSp51OGC2YtYl1F-J8L75fuHK3XhI9l7V898A&s" class="logo" alt="Liderauto Logo">
+        <h2>Calculadora de Preços</h2>
+        
+        <label for="custo">Digite o custo do produto (R$):</label>
+        <input type="number" id="custo" oninput="calcular()">
 
-    <br><br>
+        <label for="percentual_manual">Insira uma margem diferente da atual (%):</label>
+        <input type="number" id="percentual_manual" step="0.1" oninput="calcular()">
 
-    <label for="percentual_manual">Insira uma margem diferente da atual (%):</label>
-    <input type="number" id="percentual_manual" step="0.1" oninput="calcular()">
-
-    <p id="precoCheio"></p>
-    <p id="precoReduzido"></p>
-    <p id="margem"></p>
-    <p id="precoManual"></p>
+        <p id="precoCheio"></p>
+        <p id="precoReduzido"></p>
+        <p id="margem"></p>
+        <p id="precoManual"></p>
+    </div>
 
     <script>
         function formatarMoeda(valor) {
@@ -67,7 +111,6 @@
                 document.getElementById("margem").innerText = "";
             }
 
-            // Cálculo do preço manual
             if (!isNaN(percentual_manual) && percentual_manual > 0) {
                 let precoManual = custo * (1 + percentual_manual / 100);
                 precoManual = Math.round(precoManual / 10) * 10 + 7;
