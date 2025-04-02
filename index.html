@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,61 +7,103 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            text-align: center;
-            background-color: #000;
-            color: #fff;
-            padding: 20px;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
         }
         .container {
-            max-width: 500px;
-            margin: auto;
-            background: #222;
+            background: white;
             padding: 20px;
             border-radius: 10px;
-            box-shadow: 0 0 15px rgba(255, 165, 0, 0.7);
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            width: 90%;
+            max-width: 600px;
+            text-align: center;
+        }
+        .logo {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+        .logo img {
+            max-width: 150px;
         }
         input {
             width: 100%;
             padding: 10px;
             margin: 10px 0;
-            font-size: 20px;
+            border: 1px solid #ccc;
             border-radius: 5px;
-            border: none;
+            font-size: 1.2em;
+        }
+        table {
+            width: 100%;
+            margin-top: 20px;
+            border-collapse: collapse;
+        }
+        table, th, td {
+            border: 1px solid black;
+        }
+        th, td {
+            padding: 10px;
             text-align: center;
         }
-        .result {
-            font-size: 22px;
-            margin-top: 15px;
-            color: #ffa500;
-        }
-        img {
-            width: 150px;
-            margin-bottom: 20px;
+        th {
+            background-color: #f79c23;
+            color: white;
         }
     </style>
 </head>
 <body>
-    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSp51OGC2YtYl1F-J8L75fuHK3XhI9l7V898A&s" alt="Logo da Empresa">
     <div class="container">
-        <h1>Calculadora de Preços</h1>
-        <input type="number" id="custo" placeholder="Digite o custo do produto" oninput="calcular()">
-        <input type="number" id="maoDeObra" placeholder="Valor da Mão de Obra" oninput="calcular()">
-        <input type="number" id="margemManual" placeholder="Insira uma margem diferente (%)" oninput="calcular()">
+        <div class="logo">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSp51OGC2YtYl1F-J8L75fuHK3XhI9l7V898A&s" alt="Logo">
+        </div>
+        <h2>Calculadora de Preços</h2>
+        <label for="custo">Custo do Produto (R$):</label>
+        <input type="number" id="custo" oninput="calcular()" step="0.01" min="0">
         
-        <div class="result" id="precoCheio"></div>
-        <div class="result" id="precoReduzido"></div>
-        <div class="result" id="precoFinalCheio"></div>
-        <div class="result" id="precoFinalReduzido"></div>
-    </div>
+        <label for="maoObra">Mão de Obra (R$):</label>
+        <input type="number" id="maoObra" oninput="calcular()" step="0.01" min="0">
+        
+        <label for="margem">Insira uma margem diferente da atual (%):</label>
+        <input type="number" id="margem" oninput="calcular()" step="0.1" min="0">
 
+        <table>
+            <tr>
+                <th>Tipo</th>
+                <th>% Margem</th>
+                <th>R$ Valor</th>
+            </tr>
+            <tr>
+                <td>Preço Cheio</td>
+                <td id="margemCheia">-</td>
+                <td id="precoCheio">-</td>
+            </tr>
+            <tr>
+                <td>Preço Reduzido</td>
+                <td id="margemReduzida">-</td>
+                <td id="precoReduzido">-</td>
+            </tr>
+            <tr id="linhaInstalacao" style="display: none;">
+                <td>Com Instalação</td>
+                <td>-</td>
+                <td id="precoInstalacao">-</td>
+            </tr>
+        </table>
+    </div>
     <script>
         function calcularPreco(custo) {
             const precos = [
                 { custo: 5, preco: 18 }, { custo: 10, preco: 35 }, { custo: 20, preco: 67 },
                 { custo: 50, preco: 167 }, { custo: 100, preco: 247 }, { custo: 200, preco: 387 },
                 { custo: 400, preco: 467 }, { custo: 1000, preco: 1387 }, { custo: 3000, preco: 4087 },
-                { custo: 7000, preco: 8887 }, { custo: 10000, preco: 12287 }, { custo: 20000, preco: 22287 }
+                { custo: 7000, preco: 8887 }, { custo: 10000, preco: 12287 }, { custo: 20000, preco: 22000 }
             ];
+            
             for (let i = 0; i < precos.length - 1; i++) {
                 if (custo >= precos[i].custo && custo < precos[i + 1].custo) {
                     let margem = (precos[i + 1].preco - precos[i].preco) / (precos[i + 1].custo - precos[i].custo);
@@ -79,25 +121,20 @@
         
         function calcular() {
             let custo = parseFloat(document.getElementById("custo").value) || 0;
-            let maoDeObra = parseFloat(document.getElementById("maoDeObra").value) || 0;
-            let margemManual = parseFloat(document.getElementById("margemManual").value) || null;
+            let maoObra = parseFloat(document.getElementById("maoObra").value) || 0;
             let resultado = calcularPreco(custo);
             if (resultado) {
-                let precoCheio = margemManual ? custo * (1 + margemManual / 100) : resultado.precoCheio;
-                let precoReduzido = margemManual ? custo * (1 + (margemManual * 0.9) / 100) : resultado.precoReduzido;
-                precoCheio = Math.round(precoCheio / 10) * 10 + 7;
-                precoReduzido = Math.round(precoReduzido / 10) * 10 + 7;
-                let precoFinalCheio = precoCheio + maoDeObra;
-                let precoFinalReduzido = precoReduzido + maoDeObra;
-                document.getElementById("precoCheio").innerText = `Preço Cheio: R$ ${precoCheio.toLocaleString('pt-BR', {minimumFractionDigits: 2})}`;
-                document.getElementById("precoReduzido").innerText = `Preço Reduzido (-10% margem): R$ ${precoReduzido.toLocaleString('pt-BR', {minimumFractionDigits: 2})}`;
-                document.getElementById("precoFinalCheio").innerText = `Preço Final com Instalação (Tabela Cheia): R$ ${precoFinalCheio.toLocaleString('pt-BR', {minimumFractionDigits: 2})}`;
-                document.getElementById("precoFinalReduzido").innerText = `Preço Final com Instalação (Tabela Reduzida): R$ ${precoFinalReduzido.toLocaleString('pt-BR', {minimumFractionDigits: 2})}`;
-            } else {
-                document.getElementById("precoCheio").innerText = "Custo fora da faixa configurada.";
-                document.getElementById("precoReduzido").innerText = "";
-                document.getElementById("precoFinalCheio").innerText = "";
-                document.getElementById("precoFinalReduzido").innerText = "";
+                document.getElementById("precoCheio").innerText = `R$ ${resultado.precoCheio.toLocaleString('pt-BR', {minimumFractionDigits: 2})}`;
+                document.getElementById("precoReduzido").innerText = `R$ ${resultado.precoReduzido.toLocaleString('pt-BR', {minimumFractionDigits: 2})}`;
+                document.getElementById("margemCheia").innerText = `${resultado.margemAtual}%`;
+                document.getElementById("margemReduzida").innerText = `${(resultado.margemAtual * 0.9).toFixed(2)}%`;
+                
+                if (maoObra > 0) {
+                    document.getElementById("linhaInstalacao").style.display = "table-row";
+                    document.getElementById("precoInstalacao").innerText = `R$ ${(resultado.precoCheio + maoObra).toLocaleString('pt-BR', {minimumFractionDigits: 2})}`;
+                } else {
+                    document.getElementById("linhaInstalacao").style.display = "none";
+                }
             }
         }
     </script>
