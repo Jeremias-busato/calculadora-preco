@@ -1,86 +1,57 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calculadora de Preço</title>
+    <title>Calculadora de Preços</title>
     <style>
         body {
             font-family: Arial, sans-serif;
+            text-align: center;
             background-color: #000;
             color: #fff;
-            text-align: center;
             padding: 20px;
         }
         .container {
-            max-width: 600px;
+            max-width: 500px;
             margin: auto;
             background: #222;
             padding: 20px;
             border-radius: 10px;
-            box-shadow: 0px 0px 10px #ff7f00;
-        }
-        h1 {
-            color: #ff7f00;
-        }
-        label {
-            font-size: 1.2em;
+            box-shadow: 0 0 15px rgba(255, 165, 0, 0.7);
         }
         input {
             width: 100%;
             padding: 10px;
-            font-size: 1.2em;
             margin: 10px 0;
+            font-size: 20px;
             border-radius: 5px;
-            border: 1px solid #ff7f00;
+            border: none;
             text-align: center;
         }
-        button {
-            background-color: #ff7f00;
-            color: white;
-            border: none;
-            padding: 15px;
-            font-size: 1.2em;
-            width: 100%;
-            cursor: pointer;
-            border-radius: 5px;
-            margin-top: 10px;
-        }
-        button:hover {
-            background-color: #e66e00;
-        }
         .result {
-            font-size: 1.4em;
-            margin-top: 20px;
+            font-size: 22px;
+            margin-top: 15px;
+            color: #ffa500;
         }
-        .logo {
+        img {
             width: 150px;
             margin-bottom: 20px;
         }
     </style>
 </head>
 <body>
-    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSp51OGC2YtYl1F-J8L75fuHK3XhI9l7V898A&s" alt="Logo" class="logo">
+    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSp51OGC2YtYl1F-J8L75fuHK3XhI9l7V898A&s" alt="Logo da Empresa">
     <div class="container">
-        <h1>Calculadora de Preço</h1>
-        <label for="custo">Digite o custo do produto (R$):</label>
-        <input type="number" id="custo" step="0.01" placeholder="Ex: 1000.00">
+        <h1>Calculadora de Preços</h1>
+        <input type="number" id="custo" placeholder="Digite o custo do produto" oninput="calcular()">
+        <input type="number" id="maoDeObra" placeholder="Valor da Mão de Obra" oninput="calcular()">
+        <input type="number" id="margemManual" placeholder="Insira uma margem diferente (%)" oninput="calcular()">
         
-        <label for="maoObra">Digite o custo da mão de obra (R$):</label>
-        <input type="number" id="maoObra" step="0.01" placeholder="Ex: 180.00">
-        
-        <label for="margem">Insira uma margem diferente da atual (%):</label>
-        <input type="number" id="margem" step="0.1" placeholder="Opcional">
-        
-        <button onclick="calcular()">Calcular</button>
-        
-        <div class="result">
-            <p id="precoCheio"></p>
-            <p id="precoReduzido"></p>
-            <p id="precoFinalCheio"></p>
-            <p id="precoFinalReduzido"></p>
-            <p id="margemAplicada"></p>
-        </div>
+        <div class="result" id="precoCheio"></div>
+        <div class="result" id="precoReduzido"></div>
+        <div class="result" id="precoFinalCheio"></div>
+        <div class="result" id="precoFinalReduzido"></div>
     </div>
 
     <script>
@@ -89,7 +60,7 @@
                 { custo: 5, preco: 18 }, { custo: 10, preco: 35 }, { custo: 20, preco: 67 },
                 { custo: 50, preco: 167 }, { custo: 100, preco: 247 }, { custo: 200, preco: 387 },
                 { custo: 400, preco: 467 }, { custo: 1000, preco: 1387 }, { custo: 3000, preco: 4087 },
-                { custo: 7000, preco: 8887 }, { custo: 10000, preco: 12287 }, { custo: 20000, preco: 22000 }
+                { custo: 7000, preco: 8887 }, { custo: 10000, preco: 12287 }, { custo: 20000, preco: 22287 }
             ];
             for (let i = 0; i < precos.length - 1; i++) {
                 if (custo >= precos[i].custo && custo < precos[i + 1].custo) {
@@ -105,26 +76,28 @@
             }
             return null;
         }
-
+        
         function calcular() {
-            let custo = parseFloat(document.getElementById("custo").value);
-            let maoObra = parseFloat(document.getElementById("maoObra").value) || 0;
-            let margemManual = parseFloat(document.getElementById("margem").value);
+            let custo = parseFloat(document.getElementById("custo").value) || 0;
+            let maoDeObra = parseFloat(document.getElementById("maoDeObra").value) || 0;
+            let margemManual = parseFloat(document.getElementById("margemManual").value) || null;
             let resultado = calcularPreco(custo);
             if (resultado) {
-                let precoFinalCheio = resultado.precoCheio + maoObra;
-                let precoFinalReduzido = resultado.precoReduzido + maoObra;
-                document.getElementById("precoCheio").innerText = `Preço Cheio: R$ ${resultado.precoCheio.toLocaleString('pt-BR', {minimumFractionDigits: 2})}`;
-                document.getElementById("precoReduzido").innerText = `Preço Reduzido (-10% margem): R$ ${resultado.precoReduzido.toLocaleString('pt-BR', {minimumFractionDigits: 2})}`;
-                document.getElementById("precoFinalCheio").innerText = `Preço Final com Mão de Obra (Cheio): R$ ${precoFinalCheio.toLocaleString('pt-BR', {minimumFractionDigits: 2})}`;
-                document.getElementById("precoFinalReduzido").innerText = `Preço Final com Mão de Obra (Reduzido): R$ ${precoFinalReduzido.toLocaleString('pt-BR', {minimumFractionDigits: 2})}`;
-                document.getElementById("margemAplicada").innerText = `Margem aplicada: ${resultado.margemAtual}%`;
+                let precoCheio = margemManual ? custo * (1 + margemManual / 100) : resultado.precoCheio;
+                let precoReduzido = margemManual ? custo * (1 + (margemManual * 0.9) / 100) : resultado.precoReduzido;
+                precoCheio = Math.round(precoCheio / 10) * 10 + 7;
+                precoReduzido = Math.round(precoReduzido / 10) * 10 + 7;
+                let precoFinalCheio = precoCheio + maoDeObra;
+                let precoFinalReduzido = precoReduzido + maoDeObra;
+                document.getElementById("precoCheio").innerText = `Preço Cheio: R$ ${precoCheio.toLocaleString('pt-BR', {minimumFractionDigits: 2})}`;
+                document.getElementById("precoReduzido").innerText = `Preço Reduzido (-10% margem): R$ ${precoReduzido.toLocaleString('pt-BR', {minimumFractionDigits: 2})}`;
+                document.getElementById("precoFinalCheio").innerText = `Preço Final com Instalação (Tabela Cheia): R$ ${precoFinalCheio.toLocaleString('pt-BR', {minimumFractionDigits: 2})}`;
+                document.getElementById("precoFinalReduzido").innerText = `Preço Final com Instalação (Tabela Reduzida): R$ ${precoFinalReduzido.toLocaleString('pt-BR', {minimumFractionDigits: 2})}`;
             } else {
                 document.getElementById("precoCheio").innerText = "Custo fora da faixa configurada.";
                 document.getElementById("precoReduzido").innerText = "";
                 document.getElementById("precoFinalCheio").innerText = "";
                 document.getElementById("precoFinalReduzido").innerText = "";
-                document.getElementById("margemAplicada").innerText = "";
             }
         }
     </script>
