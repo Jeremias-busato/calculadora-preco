@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calculadora de Preços - Liderauto</title>
+    <title>Calculadora de Preço</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -13,34 +13,45 @@
             padding: 20px;
         }
         .container {
-            max-width: 400px;
+            max-width: 600px;
             margin: auto;
-            background-color: #111;
+            background: #222;
             padding: 20px;
             border-radius: 10px;
-            box-shadow: 0 0 15px rgba(255, 165, 0, 0.7);
+            box-shadow: 0px 0px 10px #ff7f00;
         }
-        h2 {
-            color: #FFA500;
+        h1 {
+            color: #ff7f00;
         }
         label {
-            display: block;
-            margin-top: 10px;
-            font-weight: bold;
+            font-size: 1.2em;
         }
         input {
             width: 100%;
             padding: 10px;
-            margin-top: 5px;
-            border: 1px solid #FFA500;
+            font-size: 1.2em;
+            margin: 10px 0;
             border-radius: 5px;
-            background-color: #222;
-            color: #fff;
-            font-size: 16px;
+            border: 1px solid #ff7f00;
+            text-align: center;
         }
-        p {
-            font-size: 18px;
+        button {
+            background-color: #ff7f00;
+            color: white;
+            border: none;
+            padding: 15px;
+            font-size: 1.2em;
+            width: 100%;
+            cursor: pointer;
+            border-radius: 5px;
             margin-top: 10px;
+        }
+        button:hover {
+            background-color: #e66e00;
+        }
+        .result {
+            font-size: 1.4em;
+            margin-top: 20px;
         }
         .logo {
             width: 150px;
@@ -49,47 +60,46 @@
     </style>
 </head>
 <body>
+    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSp51OGC2YtYl1F-J8L75fuHK3XhI9l7V898A&s" alt="Logo" class="logo">
     <div class="container">
-        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSp51OGC2YtYl1F-J8L75fuHK3XhI9l7V898A&s" class="logo" alt="Liderauto Logo">
-        <h2>Calculadora de Preços</h2>
-        
+        <h1>Calculadora de Preço</h1>
         <label for="custo">Digite o custo do produto (R$):</label>
-        <input type="number" id="custo" oninput="calcular()">
-
-        <label for="percentual_manual">Insira uma margem diferente da atual (%):</label>
-        <input type="number" id="percentual_manual" step="0.1" oninput="calcular()">
-
-        <p id="precoCheio"></p>
-        <p id="precoReduzido"></p>
-        <p id="margem"></p>
-        <p id="precoManual"></p>
+        <input type="number" id="custo" step="0.01" placeholder="Ex: 1000.00">
+        
+        <label for="maoObra">Digite o custo da mão de obra (R$):</label>
+        <input type="number" id="maoObra" step="0.01" placeholder="Ex: 180.00">
+        
+        <label for="margem">Insira uma margem diferente da atual (%):</label>
+        <input type="number" id="margem" step="0.1" placeholder="Opcional">
+        
+        <button onclick="calcular()">Calcular</button>
+        
+        <div class="result">
+            <p id="precoCheio"></p>
+            <p id="precoReduzido"></p>
+            <p id="precoFinalCheio"></p>
+            <p id="precoFinalReduzido"></p>
+            <p id="margemAplicada"></p>
+        </div>
     </div>
 
     <script>
-        function formatarMoeda(valor) {
-            return valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
-        }
-
         function calcularPreco(custo) {
             const precos = [
                 { custo: 5, preco: 18 }, { custo: 10, preco: 35 }, { custo: 20, preco: 67 },
                 { custo: 50, preco: 167 }, { custo: 100, preco: 247 }, { custo: 200, preco: 387 },
                 { custo: 400, preco: 467 }, { custo: 1000, preco: 1387 }, { custo: 3000, preco: 4087 },
-                { custo: 7000, preco: 8887 }, { custo: 10000, preco: 12287 }, { custo: 20000, preco: 20000 }
+                { custo: 7000, preco: 8887 }, { custo: 10000, preco: 12287 }, { custo: 20000, preco: 22000 }
             ];
-            
             for (let i = 0; i < precos.length - 1; i++) {
                 if (custo >= precos[i].custo && custo < precos[i + 1].custo) {
                     let margem = (precos[i + 1].preco - precos[i].preco) / (precos[i + 1].custo - precos[i].custo);
                     let precoCheio = precos[i].preco + margem * (custo - precos[i].custo);
                     precoCheio = Math.round(precoCheio / 10) * 10 + 7;
-                    
                     let margemAtual = ((precoCheio - custo) / custo) * 100;
                     let novaMargem = margemAtual * 0.9;
-                    
                     let precoReduzido = custo * (1 + novaMargem / 100);
                     precoReduzido = Math.round(precoReduzido / 10) * 10 + 7;
-                    
                     return { precoCheio, precoReduzido, margemAtual: margemAtual.toFixed(2) };
                 }
             }
@@ -98,25 +108,23 @@
 
         function calcular() {
             let custo = parseFloat(document.getElementById("custo").value);
-            let percentual_manual = parseFloat(document.getElementById("percentual_manual").value);
+            let maoObra = parseFloat(document.getElementById("maoObra").value) || 0;
+            let margemManual = parseFloat(document.getElementById("margem").value);
             let resultado = calcularPreco(custo);
-            
             if (resultado) {
-                document.getElementById("precoCheio").innerText = `Preço Cheio: ${formatarMoeda(resultado.precoCheio)}`;
-                document.getElementById("precoReduzido").innerText = `Preço Reduzido (-10% margem): ${formatarMoeda(resultado.precoReduzido)}`;
-                document.getElementById("margem").innerText = `Margem aplicada: ${resultado.margemAtual}%`;
+                let precoFinalCheio = resultado.precoCheio + maoObra;
+                let precoFinalReduzido = resultado.precoReduzido + maoObra;
+                document.getElementById("precoCheio").innerText = `Preço Cheio: R$ ${resultado.precoCheio.toLocaleString('pt-BR', {minimumFractionDigits: 2})}`;
+                document.getElementById("precoReduzido").innerText = `Preço Reduzido (-10% margem): R$ ${resultado.precoReduzido.toLocaleString('pt-BR', {minimumFractionDigits: 2})}`;
+                document.getElementById("precoFinalCheio").innerText = `Preço Final com Mão de Obra (Cheio): R$ ${precoFinalCheio.toLocaleString('pt-BR', {minimumFractionDigits: 2})}`;
+                document.getElementById("precoFinalReduzido").innerText = `Preço Final com Mão de Obra (Reduzido): R$ ${precoFinalReduzido.toLocaleString('pt-BR', {minimumFractionDigits: 2})}`;
+                document.getElementById("margemAplicada").innerText = `Margem aplicada: ${resultado.margemAtual}%`;
             } else {
                 document.getElementById("precoCheio").innerText = "Custo fora da faixa configurada.";
                 document.getElementById("precoReduzido").innerText = "";
-                document.getElementById("margem").innerText = "";
-            }
-
-            if (!isNaN(percentual_manual) && percentual_manual > 0) {
-                let precoManual = custo * (1 + percentual_manual / 100);
-                precoManual = Math.round(precoManual / 10) * 10 + 7;
-                document.getElementById("precoManual").innerText = `Preço com ${percentual_manual.toFixed(2)}% de margem: ${formatarMoeda(precoManual)}`;
-            } else {
-                document.getElementById("precoManual").innerText = "";
+                document.getElementById("precoFinalCheio").innerText = "";
+                document.getElementById("precoFinalReduzido").innerText = "";
+                document.getElementById("margemAplicada").innerText = "";
             }
         }
     </script>
