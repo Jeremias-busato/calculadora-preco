@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,75 +8,85 @@
         body {
             font-family: Arial, sans-serif;
             text-align: center;
-            background-color: white;
-            color: black;
+            background-color: #ffffff;
+            color: #000;
+            padding: 20px;
         }
         .container {
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            margin-top: 20px;
         }
-        .input-section, .result-section {
-            width: 400px;
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+        }
+        .header img {
+            max-height: 100px;
+            margin-right: 20px;
+        }
+        .input-container, .result-container {
+            width: 50%;
             padding: 20px;
-            border: 1px solid black;
+            border: 2px solid #000;
             border-radius: 10px;
-            background-color: #f4f4f4;
-            margin-bottom: 20px;
+            margin: 10px;
+            background-color: #fff;
+        }
+        input {
+            width: 100%;
+            padding: 10px;
+            font-size: 20px;
+            margin-top: 10px;
+        }
+        .result-container {
+            font-size: 22px;
+            font-weight: bold;
+        }
+        .highlight {
+            color: #ff6600;
+            font-weight: bold;
         }
         table {
             width: 100%;
-            border-collapse: collapse;
+            font-size: 22px;
             margin-top: 10px;
+            border-collapse: collapse;
         }
         th, td {
-            border: 1px solid black;
+            border: 1px solid #000;
             padding: 10px;
             text-align: center;
-        }
-        th {
-            background-color: #ff6600;
-            color: white;
-        }
-        .logo {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-        .logo img {
-            width: 100px;
-        }
-        .highlight {
-            font-weight: bold;
-            color: red;
         }
     </style>
 </head>
 <body>
-    <div class="logo">
-        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSp51OGC2YtYl1F-J8L75fuHK3XhI9l7V898A&s" alt="Logo">
-    </div>
     <div class="container">
-        <div class="input-section">
-            <label for="custo">Digite o custo do produto (R$):</label>
-            <input type="number" id="custo" step="0.01" oninput="atualizarPrecos()">
-            <br><br>
-            <label for="margem">Insira uma margem diferente da atual (%):</label>
-            <input type="number" id="margem" step="0.1" oninput="atualizarPrecos()">
-            <br><br>
-            <label for="maoObra">Digite o valor da mão de obra (R$):</label>
-            <input type="number" id="maoObra" step="0.01" oninput="atualizarPrecos()">
+        <div class="header">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSp51OGC2YtYl1F-J8L75fuHK3XhI9l7V898A&s" alt="Logo">
+            <h1>Calculadora de Preços</h1>
+        </div>
+        
+        <div class="input-container">
+            <label>Digite o custo do produto (R$):</label>
+            <input type="number" id="custo" oninput="calcular()" min="0" step="0.01">
+            
+            <label>Digite o valor da mão de obra (R$):</label>
+            <input type="number" id="maoDeObra" oninput="calcular()" min="0" step="0.01">
+            
+            <label>Insira uma margem diferente da atual (%):</label>
+            <input type="number" id="margemManual" oninput="calcular()" min="0" step="0.1">
         </div>
 
-        <div class="result-section">
+        <div class="result-container">
             <table>
                 <tr>
-                    <th>Descrição</th>
-                    <th>%</th>
-                    <th>R$</th>
+                    <th>Tipo</th>
+                    <th>% Margem</th>
+                    <th>Preço Final (R$)</th>
                 </tr>
                 <tr>
                     <td>Preço Cheio</td>
@@ -88,58 +98,62 @@
                     <td id="margemReduzida">-</td>
                     <td id="precoReduzido">-</td>
                 </tr>
-                <tr id="precoInstalacaoRow" style="display: none;">
-                    <td>Preço Cheio c/ Instalação</td>
-                    <td id="margemInstalacao">-</td>
-                    <td id="precoInstalacao">-</td>
-                </tr>
-                <tr id="precoReduzidoInstalacaoRow" style="display: none;">
-                    <td>Preço Reduzido c/ Instalação</td>
-                    <td id="margemReduzidaInstalacao">-</td>
-                    <td id="precoReduzidoInstalacao">-</td>
+                <tr id="maoDeObraRow" style="display: none;">
+                    <td>Preço com Instalação</td>
+                    <td>-</td>
+                    <td id="precoComInstalacao">-</td>
                 </tr>
             </table>
         </div>
     </div>
 
     <script>
-        function calcularPreco(custo, margemManual) {
+        function calcularPreco(custo, margemManual = null) {
             const precos = [
-                { custo: 5, preco: 18 }, { custo: 10, preco: 35 }, { custo: 20, preco: 67 }, { custo: 50, preco: 167 },
-                { custo: 100, preco: 247 }, { custo: 200, preco: 387 }, { custo: 400, preco: 467 }, { custo: 1000, preco: 1387 },
-                { custo: 3000, preco: 4087 }, { custo: 7000, preco: 8887 }, { custo: 10000, preco: 12287 }, { custo: 20000, preco: 22287 }
+                { custo: 5, preco: 18 }, { custo: 10, preco: 35 }, { custo: 20, preco: 67 },
+                { custo: 50, preco: 167 }, { custo: 100, preco: 247 }, { custo: 200, preco: 387 },
+                { custo: 400, preco: 467 }, { custo: 1000, preco: 1387 }, { custo: 3000, preco: 4087 },
+                { custo: 7000, preco: 8887 }, { custo: 10000, preco: 12287 }, { custo: 20000, preco: 22287 }
             ];
+            
             for (let i = 0; i < precos.length - 1; i++) {
                 if (custo >= precos[i].custo && custo < precos[i + 1].custo) {
                     let margem = (precos[i + 1].preco - precos[i].preco) / (precos[i + 1].custo - precos[i].custo);
                     let precoCheio = precos[i].preco + margem * (custo - precos[i].custo);
                     precoCheio = Math.round(precoCheio / 10) * 10 + 7;
-                    let margemAtual = margemManual ? margemManual : ((precoCheio - custo) / custo) * 100;
-                    let novaMargem = margemAtual * 0.9;
-                    let precoReduzido = custo * (1 + novaMargem / 100);
+                    let margemAtual = ((precoCheio - custo) / custo) * 100;
+                    
+                    if (margemManual) {
+                        margemAtual = margemManual;
+                        precoCheio = custo * (1 + margemAtual / 100);
+                        precoCheio = Math.round(precoCheio / 10) * 10 + 7;
+                    }
+                    
+                    let margemReduzida = margemAtual * 0.9;
+                    let precoReduzido = custo * (1 + margemReduzida / 100);
                     precoReduzido = Math.round(precoReduzido / 10) * 10 + 7;
-                    return { precoCheio, precoReduzido, margemAtual: margemAtual.toFixed(2), margemReduzida: novaMargem.toFixed(2) };
+                    
+                    return { precoCheio, precoReduzido, margemAtual: margemAtual.toFixed(2), margemReduzida: margemReduzida.toFixed(2) };
                 }
             }
             return null;
         }
-        
-        function atualizarPrecos() {
-            let custo = parseFloat(document.getElementById("custo").value) || 0;
-            let margemManual = parseFloat(document.getElementById("margem").value);
-            let maoObra = parseFloat(document.getElementById("maoObra").value) || 0;
-            let resultado = calcularPreco(custo, margemManual);
+
+        function calcular() {
+            let custo = parseFloat(document.getElementById("custo").value);
+            let maoDeObra = parseFloat(document.getElementById("maoDeObra").value) || 0;
+            let margemManual = parseFloat(document.getElementById("margemManual").value);
             
+            let resultado = calcularPreco(custo, margemManual);
             if (resultado) {
-                document.getElementById("margemCheia").innerHTML = `<b>${resultado.margemAtual}%</b>`;
-                document.getElementById("precoCheio").innerHTML = `<b>R$ ${resultado.precoCheio.toFixed(2)}</b>`;
-                document.getElementById("margemReduzida").innerText = resultado.margemReduzida + "%";
-                document.getElementById("precoReduzido").innerText = `R$ ${resultado.precoReduzido.toFixed(2)}`;
-                if (maoObra > 0) {
-                    document.getElementById("precoInstalacao").innerText = `R$ ${(resultado.precoCheio + maoObra).toFixed(2)}`;
-                    document.getElementById("precoInstalacaoRow").style.display = "table-row";
-                    document.getElementById("precoReduzidoInstalacao").innerText = `R$ ${(resultado.precoReduzido + maoObra).toFixed(2)}`;
-                    document.getElementById("precoReduzidoInstalacaoRow").style.display = "table-row";
+                document.getElementById("margemCheia").innerHTML = margemManual ? `<span class='highlight'>${margemManual.toFixed(2)}%</span>` : `${resultado.margemAtual}%`;
+                document.getElementById("precoCheio").innerText = `R$ ${resultado.precoCheio.toLocaleString("pt-BR", {minimumFractionDigits: 2})}`;
+                document.getElementById("margemReduzida").innerText = `${resultado.margemReduzida}%`;
+                document.getElementById("precoReduzido").innerText = `R$ ${resultado.precoReduzido.toLocaleString("pt-BR", {minimumFractionDigits: 2})}`;
+                
+                if (maoDeObra > 0) {
+                    document.getElementById("maoDeObraRow").style.display = "table-row";
+                    document.getElementById("precoComInstalacao").innerText = `R$ ${(resultado.precoCheio + maoDeObra).toLocaleString("pt-BR", {minimumFractionDigits: 2})}`;
                 }
             }
         }
