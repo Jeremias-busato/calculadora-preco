@@ -1,37 +1,79 @@
-function calcularPreco(custo) {
-    const precos = [
-        { custo: 5, preco: 18 }, { custo: 10, preco: 35 }, { custo: 20, preco: 67 }, { custo: 50, preco: 167 },
-        { custo: 100, preco: 247 }, { custo: 200, preco: 387 }, { custo: 400, preco: 467 }, { custo: 1000, preco: 1387 },
-        { custo: 3000, preco: 4087 }, { custo: 7000, preco: 8887 }, { custo: 10000, preco: 12287 }
-    ];
-
-    for (let i = 0; i < precos.length - 1; i++) {
-        if (custo >= precos[i].custo && custo < precos[i + 1].custo) {
-            let margem = (precos[i + 1].preco - precos[i].preco) / (precos[i + 1].custo - precos[i].custo);
-            let precoCheio = precos[i].preco + margem * (custo - precos[i].custo);
-            precoCheio = Math.round(precoCheio / 10) * 10 + 7;
-
-            let margemAtual = ((precoCheio - custo) / custo) * 100;
-            let novaMargem = margemAtual * 0.9; 
-            let precoReduzido = custo * (1 + novaMargem / 100);
-            precoReduzido = Math.round(precoReduzido / 10) * 10 + 7;
-
-            return { precoCheio, precoReduzido, margemAtual: margemAtual.toFixed(2) };
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Preços</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; margin: 50px; }
+        input, select { margin: 10px; padding: 5px; font-size: 16px; }
+        .resultado { font-size: 20px; margin-top: 20px; }
+    </style>
+</head>
+<body>
+    <h1>Calculadora de Preços Adaptativa</h1>
+    <label for="custo">Digite o custo do produto (R$):</label>
+    <input type="number" id="custo" step="0.01" oninput="calcularPreco()">
+    
+    <label for="tipoTabela">Escolha o tipo de tabela:</label>
+    <select id="tipoTabela" onchange="calcularPreco()">
+        <option value="cheia">Tabela Cheia</option>
+        <option value="reduzida">Tabela Reduzida (-10%)</option>
+    </select>
+    
+    <label for="margemManual">Digite a porcentagem manual (%):</label>
+    <input type="number" id="margemManual" step="0.1" oninput="calcularPreco()">
+    
+    <div class="resultado" id="resultado"></div>
+    
+    <script>
+        function calcularPreco() {
+            let custo = parseFloat(document.getElementById("custo").value) || 0;
+            let tipoTabela = document.getElementById("tipoTabela").value;
+            let margemManual = parseFloat(document.getElementById("margemManual").value) || 0;
+            
+            let precos = [
+                [5, 18], [10, 35], [20, 67], [50, 167], [100, 247],
+                [200, 387], [400, 467], [1000, 1387], [3000, 4087],
+                [7000, 8887], [10000, 12287]
+            ];
+            
+            let precoCheio = null;
+            for (let i = 0; i < precos.length - 1; i++) {
+                if (precos[i][0] <= custo && custo < precos[i + 1][0]) {
+                    let [custoInicial, precoInicial] = precos[i];
+                    let [custoFinal, precoFinal] = precos[i + 1];
+                    let margem = (precoFinal - precoInicial) / (custoFinal - custoInicial);
+                    precoCheio = precoInicial + margem * (custo - custoInicial);
+                }
+            }
+            
+            if (precoCheio !== null) {
+                let margemCheia = ((precoCheio - custo) / custo) * 100;
+                let margemReduzida = margemCheia * 0.9;
+                let precoReduzido = custo * (1 + margemReduzida / 100);
+                
+                precoCheio = Math.round(precoCheio / 10) * 10 + 7;
+                precoReduzido = Math.round(precoReduzido / 10) * 10 + 7;
+                
+                let precoFinal = tipoTabela === "cheia" ? precoCheio : precoReduzido;
+                let margemFinal = tipoTabela === "cheia" ? margemCheia : margemReduzida;
+                
+                let resultadoHTML = `
+                    <p>Preço ${tipoTabela === "cheia" ? "Cheio" : "Reduzido"}: R$ ${precoFinal.toFixed(2)} (${margemFinal.toFixed(2)}% de margem)</p>
+                `;
+                
+                if (margemManual > 0) {
+                    let precoManual = custo * (1 + margemManual / 100);
+                    precoManual = Math.round(precoManual / 10) * 10 + 7;
+                    resultadoHTML += `<p>Preço com ${margemManual.toFixed(2)}% de margem: R$ ${precoManual.toFixed(2)}</p>`;
+                }
+                
+                document.getElementById("resultado").innerHTML = resultadoHTML;
+            } else {
+                document.getElementById("resultado").innerHTML = "Custo fora da faixa configurada.";
+            }
         }
-    }
-    return null;
-}
-
-function calcular() {
-    let custo = parseFloat(document.getElementById("custo").value);
-    let resultado = calcularPreco(custo);
-    if (resultado) {
-        document.getElementById("precoCheio").innerText = `Preço Cheio: R$ ${resultado.precoCheio.toFixed(2)}`;
-        document.getElementById("precoReduzido").innerText = `Preço Reduzido (-10% margem): R$ ${resultado.precoReduzido.toFixed(2)}`;
-        document.getElementById("margem").innerText = `Margem aplicada: ${resultado.margemAtual}%`;
-    } else {
-        document.getElementById("precoCheio").innerText = "Custo fora da faixa configurada.";
-        document.getElementById("precoReduzido").innerText = "";
-        document.getElementById("margem").innerText = "";
-    }
-}
+    </script>
+</body>
+</html>
