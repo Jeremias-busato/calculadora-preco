@@ -1,53 +1,37 @@
-import streamlit as st
+function calcularPreco(custo) {
+    const precos = [
+        { custo: 5, preco: 18 }, { custo: 10, preco: 35 }, { custo: 20, preco: 67 }, { custo: 50, preco: 167 },
+        { custo: 100, preco: 247 }, { custo: 200, preco: 387 }, { custo: 400, preco: 467 }, { custo: 1000, preco: 1387 },
+        { custo: 3000, preco: 4087 }, { custo: 7000, preco: 8887 }, { custo: 10000, preco: 12287 }
+    ];
 
-def calcular_preco(custo):
-    # Faixas de custo definidas
-    precos = [
-        (5, 18), (10, 35), (20, 67), (50, 167), (100, 247),
-        (200, 387), (400, 467), (1000, 1387), (3000, 4087),
-        (7000, 8887), (10000, 12287)
-    ]
-    
-    for i in range(len(precos) - 1):
-        if precos[i][0] <= custo < precos[i + 1][0]:
-            custo_inicial, preco_inicial = precos[i]
-            custo_final, preco_final = precos[i + 1]
-            
-            # Interpolação linear
-            margem = ((preco_final - preco_inicial) / (custo_final - custo_inicial))
-            preco_sugerido = preco_inicial + margem * (custo - custo_inicial)
-            
-            # Cálculo da margem percentual
-            margem_percentual = ((preco_sugerido - custo) / custo) * 100
-            
-            # Aplicar redução de 10% na margem percentual para tabela reduzida
-            margem_reduzida_percentual = margem_percentual * 0.9
-            preco_reduzido = custo * (1 + margem_reduzida_percentual / 100)
-            
-            # Arredondamento para terminar em 7
-            preco_sugerido = round(preco_sugerido / 10) * 10 + 7
-            preco_reduzido = round(preco_reduzido / 10) * 10 + 7
-            
-            return preco_sugerido, preco_reduzido, margem_percentual, margem_reduzida_percentual
-    
-    return None, None, None, None
+    for (let i = 0; i < precos.length - 1; i++) {
+        if (custo >= precos[i].custo && custo < precos[i + 1].custo) {
+            let margem = (precos[i + 1].preco - precos[i].preco) / (precos[i + 1].custo - precos[i].custo);
+            let precoCheio = precos[i].preco + margem * (custo - precos[i].custo);
+            precoCheio = Math.round(precoCheio / 10) * 10 + 7;
 
-st.title("Calculadora de Preços Adaptativa")
-custo = st.number_input("Digite o custo do produto (R$):", min_value=0.0, step=0.01)
+            let margemAtual = ((precoCheio - custo) / custo) * 100;
+            let novaMargem = margemAtual * 0.9; 
+            let precoReduzido = custo * (1 + novaMargem / 100);
+            precoReduzido = Math.round(precoReduzido / 10) * 10 + 7;
 
-# Entrada para percentual manual
-percentual_manual = st.number_input("Digite a porcentagem desejada (%):", min_value=0.0, step=0.1)
+            return { precoCheio, precoReduzido, margemAtual: margemAtual.toFixed(2) };
+        }
+    }
+    return null;
+}
 
-if custo > 0:
-    preco_cheio, preco_reduzido, margem_cheia, margem_reduzida = calcular_preco(custo)
-    if preco_cheio:
-        st.write(f"### Preço Cheio: R$ {preco_cheio:.2f} ({margem_cheia:.2f}% de margem)")
-        st.write(f"### Preço Reduzido: R$ {preco_reduzido:.2f} ({margem_reduzida:.2f}% de margem)")
-    else:
-        st.write("Custo fora da faixa configurada.")
-    
-    # Cálculo do preço com porcentagem personalizada
-    if percentual_manual > 0:
-        preco_manual = custo * (1 + percentual_manual / 100)
-        preco_manual = round(preco_manual / 10) * 10 + 7
-        st.write(f"### Preço com {percentual_manual:.2f}% de margem: R$ {preco_manual:.2f}")
+function calcular() {
+    let custo = parseFloat(document.getElementById("custo").value);
+    let resultado = calcularPreco(custo);
+    if (resultado) {
+        document.getElementById("precoCheio").innerText = `Preço Cheio: R$ ${resultado.precoCheio.toFixed(2)}`;
+        document.getElementById("precoReduzido").innerText = `Preço Reduzido (-10% margem): R$ ${resultado.precoReduzido.toFixed(2)}`;
+        document.getElementById("margem").innerText = `Margem aplicada: ${resultado.margemAtual}%`;
+    } else {
+        document.getElementById("precoCheio").innerText = "Custo fora da faixa configurada.";
+        document.getElementById("precoReduzido").innerText = "";
+        document.getElementById("margem").innerText = "";
+    }
+}
