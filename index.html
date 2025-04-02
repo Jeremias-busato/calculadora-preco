@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,94 +7,78 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
+            text-align: center;
+            background-color: #ffffff;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
-            margin: 0;
-        }
-        .container {
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-            width: 90%;
-            max-width: 600px;
-            text-align: center;
         }
         .logo {
-            display: flex;
-            justify-content: center;
-            margin-bottom: 20px;
+            flex: 1;
+            text-align: left;
+            padding-left: 20px;
         }
-        .logo img {
-            max-width: 150px;
-        }
-        input {
-            width: 100%;
-            padding: 10px;
-            margin: 10px 0;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            font-size: 1.2em;
+        .content {
+            flex: 2;
+            max-width: 600px;
         }
         table {
             width: 100%;
             margin-top: 20px;
             border-collapse: collapse;
         }
-        table, th, td {
-            border: 1px solid black;
-        }
         th, td {
+            border: 1px solid black;
             padding: 10px;
             text-align: center;
         }
-        th {
-            background-color: #f79c23;
-            color: white;
+        input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            font-size: 16px;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="logo">
-            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSp51OGC2YtYl1F-J8L75fuHK3XhI9l7V898A&s" alt="Logo">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSp51OGC2YtYl1F-J8L75fuHK3XhI9l7V898A&s" alt="Logo" width="150">
         </div>
-        <h2>Calculadora de Preços</h2>
-        <label for="custo">Custo do Produto (R$):</label>
-        <input type="number" id="custo" oninput="calcular()" step="0.01" min="0">
-        
-        <label for="maoObra">Mão de Obra (R$):</label>
-        <input type="number" id="maoObra" oninput="calcular()" step="0.01" min="0">
-        
-        <label for="margem">Insira uma margem diferente da atual (%):</label>
-        <input type="number" id="margem" oninput="calcular()" step="0.1" min="0">
-
-        <table>
-            <tr>
-                <th>Tipo</th>
-                <th>% Margem</th>
-                <th>R$ Valor</th>
-            </tr>
-            <tr>
-                <td>Preço Cheio</td>
-                <td id="margemCheia">-</td>
-                <td id="precoCheio">-</td>
-            </tr>
-            <tr>
-                <td>Preço Reduzido</td>
-                <td id="margemReduzida">-</td>
-                <td id="precoReduzido">-</td>
-            </tr>
-            <tr id="linhaInstalacao" style="display: none;">
-                <td>Com Instalação</td>
-                <td>-</td>
-                <td id="precoInstalacao">-</td>
-            </tr>
-        </table>
+        <div class="content">
+            <h1>Calculadora de Preços</h1>
+            <input type="number" id="custo" placeholder="Digite o custo do produto (R$)">
+            <input type="number" id="maoDeObra" placeholder="Digite o valor da mão de obra (R$)">
+            <input type="number" id="margemManual" placeholder="Insira uma margem diferente da atual (%)">
+            
+            <table>
+                <tr>
+                    <th>Tipo</th>
+                    <th>Margem (%)</th>
+                    <th>Preço Final (R$)</th>
+                    <th>Com Instalação (R$)</th>
+                </tr>
+                <tr>
+                    <td>Preço Cheio</td>
+                    <td id="margemCheia">-</td>
+                    <td id="precoCheio">-</td>
+                    <td id="precoComInstalacaoCheio">-</td>
+                </tr>
+                <tr>
+                    <td>Preço Reduzido</td>
+                    <td id="margemReduzida">-</td>
+                    <td id="precoReduzido">-</td>
+                    <td id="precoComInstalacaoReduzido">-</td>
+                </tr>
+            </table>
+        </div>
     </div>
+
     <script>
         function calcularPreco(custo) {
             const precos = [
@@ -103,7 +87,7 @@
                 { custo: 400, preco: 467 }, { custo: 1000, preco: 1387 }, { custo: 3000, preco: 4087 },
                 { custo: 7000, preco: 8887 }, { custo: 10000, preco: 12287 }, { custo: 20000, preco: 22000 }
             ];
-            
+
             for (let i = 0; i < precos.length - 1; i++) {
                 if (custo >= precos[i].custo && custo < precos[i + 1].custo) {
                     let margem = (precos[i + 1].preco - precos[i].preco) / (precos[i + 1].custo - precos[i].custo);
@@ -113,30 +97,36 @@
                     let novaMargem = margemAtual * 0.9;
                     let precoReduzido = custo * (1 + novaMargem / 100);
                     precoReduzido = Math.round(precoReduzido / 10) * 10 + 7;
-                    return { precoCheio, precoReduzido, margemAtual: margemAtual.toFixed(2) };
+                    return { precoCheio, precoReduzido, margemAtual: margemAtual.toFixed(2), novaMargem: novaMargem.toFixed(2) };
                 }
             }
             return null;
         }
-        
-        function calcular() {
+
+        function atualizarResultados() {
             let custo = parseFloat(document.getElementById("custo").value) || 0;
-            let maoObra = parseFloat(document.getElementById("maoObra").value) || 0;
+            let maoDeObra = parseFloat(document.getElementById("maoDeObra").value) || 0;
+            let margemManual = parseFloat(document.getElementById("margemManual").value);
             let resultado = calcularPreco(custo);
+            
             if (resultado) {
-                document.getElementById("precoCheio").innerText = `R$ ${resultado.precoCheio.toLocaleString('pt-BR', {minimumFractionDigits: 2})}`;
-                document.getElementById("precoReduzido").innerText = `R$ ${resultado.precoReduzido.toLocaleString('pt-BR', {minimumFractionDigits: 2})}`;
-                document.getElementById("margemCheia").innerText = `${resultado.margemAtual}%`;
-                document.getElementById("margemReduzida").innerText = `${(resultado.margemAtual * 0.9).toFixed(2)}%`;
-                
-                if (maoObra > 0) {
-                    document.getElementById("linhaInstalacao").style.display = "table-row";
-                    document.getElementById("precoInstalacao").innerText = `R$ ${(resultado.precoCheio + maoObra).toLocaleString('pt-BR', {minimumFractionDigits: 2})}`;
-                } else {
-                    document.getElementById("linhaInstalacao").style.display = "none";
-                }
+                document.getElementById("margemCheia").innerText = resultado.margemAtual + "%";
+                document.getElementById("precoCheio").innerText = `R$ ${resultado.precoCheio.toFixed(2)}`;
+                document.getElementById("precoComInstalacaoCheio").innerText = maoDeObra > 0 ? `R$ ${(resultado.precoCheio + maoDeObra).toFixed(2)}` : "-";
+                document.getElementById("margemReduzida").innerText = resultado.novaMargem + "%";
+                document.getElementById("precoReduzido").innerText = `R$ ${resultado.precoReduzido.toFixed(2)}`;
+                document.getElementById("precoComInstalacaoReduzido").innerText = maoDeObra > 0 ? `R$ ${(resultado.precoReduzido + maoDeObra).toFixed(2)}` : "-";
+            }
+            
+            if (!isNaN(margemManual)) {
+                let precoManual = custo * (1 + margemManual / 100);
+                precoManual = Math.round(precoManual / 10) * 10 + 7;
+                document.getElementById("precoCheio").innerText = `R$ ${precoManual.toFixed(2)}`;
+                document.getElementById("precoComInstalacaoCheio").innerText = maoDeObra > 0 ? `R$ ${(precoManual + maoDeObra).toFixed(2)}` : "-";
             }
         }
+
+        document.querySelectorAll("input").forEach(input => input.addEventListener("input", atualizarResultados));
     </script>
 </body>
 </html>
