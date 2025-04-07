@@ -118,124 +118,124 @@
   </div>
 
   <script>
-    // Tabela fornecida: custo -> preço base
+    // Nova tabela custo -> preço base
     const precosBase = [
       { custo: 1.00,   preco: 4.00 },
       { custo: 2.00,   preco: 7.69 },
-      { custo: 3.00,   preco: 11.42 },
-      { custo: 4.00,   preco: 15.06 },
-      { custo: 5.00,   preco: 18.63 },
-      { custo: 6.00,   preco: 22.12 },
-      { custo: 7.00,   preco: 25.52 },
-      { custo: 8.00,   preco: 28.85 },
-      { custo: 9.00,   preco: 32.10 },
-      { custo: 10.00,  preco: 35.26 },
-      { custo: 12.00,  preco: 41.83 },
-      { custo: 14.00,  preco: 48.25 },
-      { custo: 16.00,  preco: 54.50 },
-      { custo: 18.00,  preco: 60.59 },
-      { custo: 20.00,  preco: 66.52 },
-      { custo: 22.00,  preco: 72.30 },
-      { custo: 24.00,  preco: 77.91 },
-      { custo: 26.00,  preco: 83.36 },
-      { custo: 28.00,  preco: 88.65 },
-      { custo: 30.00,  preco: 93.78 },
-      { custo: 33.00,  preco: 101.84 },
-      { custo: 36.00,  preco: 109.66 },
-      { custo: 39.00,  preco: 117.24 },
-      { custo: 42.00,  preco: 124.58 },
-      { custo: 45.00,  preco: 131.68 },
-      { custo: 48.00,  preco: 138.54 },
-      { custo: 51.00,  preco: 145.15 },
-      { custo: 54.00,  preco: 151.53 },
-      { custo: 57.00,  preco: 157.67 },
-      { custo: 60.00,  preco: 163.57 },
-      { custo: 64.00,  preco: 171.91 },
-      { custo: 68.00,  preco: 179.94 },
-      { custo: 72.00,  preco: 187.64 },
-      { custo: 76.00,  preco: 195.03 },
-      { custo: 80.00,  preco: 202.09 },
-      { custo: 84.00,  preco: 208.84 },
-      { custo: 88.00,  preco: 215.26 },
-      { custo: 92.00,  preco: 221.37 },
-      { custo: 96.00,  preco: 227.15 },
-      { custo: 100.00, preco: 232.62 },
-      { custo: 105.00, preco: 240.05 },
-      { custo: 110.00, preco: 247.08 },
-      { custo: 115.00, preco: 253.71 },
-      { custo: 130.00, preco: 281.60 },
-      { custo: 145.00, preco: 308.29 },
-      { custo: 160.00, preco: 333.78 },
-      { custo: 175.00, preco: 358.08 },
-      { custo: 190.00, preco: 381.17 },
-      { custo: 200.00, preco: 395.23 },
-      { custo: 220.00, preco: 428.15 },
-      { custo: 240.00, preco: 459.88 },
-      { custo: 260.00, preco: 490.40 },
-      { custo: 280.00, preco: 519.72 },
-      { custo: 300.00, preco: 547.85 },
-      { custo: 330.00, preco: 592.73 },
-      { custo: 360.00, preco: 635.82 },
-      { custo: 390.00, preco: 677.10 },
-      { custo: 420.00, preco: 720.78 },
-      { custo: 450.00, preco: 763.27 },
-      { custo: 480.00, preco: 804.55 },
-      { custo: 510.00, preco: 844.64 },
-      { custo: 540.00, preco: 883.52 },
-      { custo: 570.00, preco: 921.21 },
-      { custo: 600.00, preco: 957.69 },
-      { custo: 640.00, preco: 1008.74 },
-      { custo: 680.00, preco: 1058.18 },
-      { custo: 720.00, preco: 1106.03 },
-      { custo: 760.00, preco: 1152.28 },
-      { custo: 800.00, preco: 1196.92 },
-      { custo: 850.00, preco: 1254.73 },
-      { custo: 900.00, preco: 1310.54 },
-      { custo: 950.00, preco: 1364.35 },
-      { custo: 1000.00, preco: 1426.15 },
-      { custo: 1050.00, preco: 1486.96 },
-      { custo: 1100.00, preco: 1546.77 },
-      { custo: 1150.00, preco: 1605.58 },
-      { custo: 1200.00, preco: 1669.38 },
-      { custo: 1250.00, preco: 1732.69 },
-      { custo: 1300.00, preco: 1795.50 },
-      { custo: 1350.00, preco: 1857.81 },
-      { custo: 1400.00, preco: 1919.62 },
-      { custo: 1450.00, preco: 1980.92 },
-      { custo: 1500.00, preco: 2044.73 },
-      { custo: 1650.00, preco: 2244.25 },
-      { custo: 1700.00, preco: 2307.16 },
-      { custo: 1750.00, preco: 2369.77 },
-      { custo: 1800.00, preco: 2432.08 },
-      { custo: 1850.00, preco: 2494.08 },
-      { custo: 1900.00, preco: 2555.79 },
-      { custo: 1950.00, preco: 2617.20 },
-      { custo: 2000.00, preco: 2678.31 },
-      { custo: 2500.00, preco: 3340.38 },
-      { custo: 3000.00, preco: 3999.46 },
-      { custo: 3500.00, preco: 4655.54 },
-      { custo: 4000.00, preco: 5308.62 },
-      { custo: 4500.00, preco: 5958.69 },
-      { custo: 5000.00, preco: 6605.77 },
-      { custo: 5500.00, preco: 7249.85 },
-      { custo: 6000.00, preco: 7890.92 },
-      { custo: 6500.00, preco: 8529.00 },
-      { custo: 7000.00, preco: 9164.08 },
-      { custo: 7500.00, preco: 9796.15 },
-      { custo: 8000.00, preco: 10425.23 },
-      { custo: 8500.00, preco: 11051.31 },
-      { custo: 9000.00, preco: 11674.38 },
-      { custo: 9500.00, preco: 12294.46 },
-      { custo: 10000.00, preco: 12911.54 },
-      { custo: 10500.00, preco: 13525.62 },
-      { custo: 11000.00, preco: 14136.69 },
-      { custo: 11500.00, preco: 14744.77 },
-      { custo: 12000.00, preco: 15349.85 }
+      { custo: 3.00,   preco: 11.39 },
+      { custo: 4.00,   preco: 14.98 },
+      { custo: 5.00,   preco: 18.48 },
+      { custo: 6.00,   preco: 21.88 },
+      { custo: 7.00,   preco: 25.17 },
+      { custo: 8.00,   preco: 28.37 },
+      { custo: 9.00,   preco: 31.47 },
+      { custo: 10.00,  preco: 34.46 },
+      { custo: 12.00,  preco: 40.75 },
+      { custo: 14.00,  preco: 46.85 },
+      { custo: 16.00,  preco: 52.74 },
+      { custo: 18.00,  preco: 58.43 },
+      { custo: 20.00,  preco: 63.92 },
+      { custo: 22.00,  preco: 69.22 },
+      { custo: 24.00,  preco: 74.31 },
+      { custo: 26.00,  preco: 79.20 },
+      { custo: 28.00,  preco: 83.89 },
+      { custo: 30.00,  preco: 88.38 },
+      { custo: 33.00,  preco: 95.57 },
+      { custo: 36.00,  preco: 102.46 },
+      { custo: 39.00,  preco: 109.05 },
+      { custo: 42.00,  preco: 115.34 },
+      { custo: 45.00,  preco: 121.33 },
+      { custo: 48.00,  preco: 127.02 },
+      { custo: 51.00,  preco: 132.40 },
+      { custo: 54.00,  preco: 138.03 },
+      { custo: 57.00,  preco: 143.42 },
+      { custo: 60.00,  preco: 148.57 },
+      { custo: 64.00,  preco: 155.91 },
+      { custo: 68.00,  preco: 162.94 },
+      { custo: 72.00,  preco: 169.64 },
+      { custo: 76.00,  preco: 176.03 },
+      { custo: 80.00,  preco: 182.09 },
+      { custo: 84.00,  preco: 187.84 },
+      { custo: 88.00,  preco: 193.26 },
+      { custo: 92.00,  preco: 198.37 },
+      { custo: 96.00,  preco: 203.15 },
+      { custo: 100.00, preco: 207.62 },
+      { custo: 105.00, preco: 213.80 },
+      { custo: 110.00, preco: 219.58 },
+      { custo: 115.00, preco: 224.96 },
+      { custo: 130.00, preco: 249.10 },
+      { custo: 145.00, preco: 272.04 },
+      { custo: 160.00, preco: 293.78 },
+      { custo: 175.00, preco: 314.33 },
+      { custo: 190.00, preco: 333.67 },
+      { custo: 200.00, preco: 343.23 },
+      { custo: 220.00, preco: 368.75 },
+      { custo: 240.00, preco: 392.68 },
+      { custo: 260.00, preco: 415.00 },
+      { custo: 280.00, preco: 435.72 },
+      { custo: 300.00, preco: 457.85 },
+      { custo: 330.00, preco: 493.73 },
+      { custo: 360.00, preco: 527.82 },
+      { custo: 390.00, preco: 560.10 },
+      { custo: 420.00, preco: 590.58 },
+      { custo: 450.00, preco: 623.77 },
+      { custo: 480.00, preco: 655.75 },
+      { custo: 510.00, preco: 686.54 },
+      { custo: 540.00, preco: 721.52 },
+      { custo: 570.00, preco: 755.91 },
+      { custo: 600.00, preco: 789.69 },
+      { custo: 640.00, preco: 837.22 },
+      { custo: 680.00, preco: 884.10 },
+      { custo: 720.00, preco: 930.35 },
+      { custo: 760.00, preco: 976.72 },
+      { custo: 800.00, preco: 1022.52 },
+      { custo: 850.00, preco: 1080.48 },
+      { custo: 900.00, preco: 1138.64 },
+      { custo: 950.00, preco: 1196.20 },
+      { custo: 1000.00, preco: 1253.15 },
+      { custo: 1050.00, preco: 1310.56 },
+      { custo: 1100.00, preco: 1367.47 },
+      { custo: 1150.00, preco: 1423.88 },
+      { custo: 1200.00, preco: 1480.98 },
+      { custo: 1250.00, preco: 1537.69 },
+      { custo: 1300.00, preco: 1594.00 },
+      { custo: 1350.00, preco: 1649.91 },
+      { custo: 1400.00, preco: 1706.82 },
+      { custo: 1450.00, preco: 1763.42 },
+      { custo: 1500.00, preco: 1819.73 },
+      { custo: 1650.00, preco: 1996.75 },
+      { custo: 1700.00, preco: 2053.86 },
+      { custo: 1750.00, preco: 2110.77 },
+      { custo: 1800.00, preco: 2167.48 },
+      { custo: 1850.00, preco: 2223.98 },
+      { custo: 1900.00, preco: 2282.19 },
+      { custo: 1950.00, preco: 2340.30 },
+      { custo: 2000.00, preco: 2398.31 },
+      { custo: 2500.00, preco: 2995.38 },
+      { custo: 3000.00, preco: 3591.46 },
+      { custo: 3500.00, preco: 4190.04 },
+      { custo: 4000.00, preco: 4788.62 },
+      { custo: 4500.00, preco: 5387.19 },
+      { custo: 5000.00, preco: 5985.77 },
+      { custo: 5500.00, preco: 6584.35 },
+      { custo: 6000.00, preco: 7182.92 },
+      { custo: 6500.00, preco: 7781.50 },
+      { custo: 7000.00, preco: 8380.08 },
+      { custo: 7500.00, preco: 8978.65 },
+      { custo: 8000.00, preco: 9577.23 },
+      { custo: 8500.00, preco: 10175.81 },
+      { custo: 9000.00, preco: 10774.38 },
+      { custo: 9500.00, preco: 11372.96 },
+      { custo: 10000.00, preco: 11971.54 },
+      { custo: 10500.00, preco: 12570.12 },
+      { custo: 11000.00, preco: 13168.69 },
+      { custo: 11500.00, preco: 13767.27 },
+      { custo: 12000.00, preco: 14365.85 }
     ];
 
     // Função para forçar o final em "7,00", arredondando para cima
     function fixPrice(valor) {
-      // Exemplo: 232.62 => Math.ceil(232.62/10)=24, 24*10 = 240, 240-3 = 237
+      // Exemplo: valor=232.62 => ceil(232.62/10)=ceil(23.262)=24 => 24*10=240 => 240-3=237
       return Math.ceil(valor / 10) * 10 - 3;
     }
 
@@ -243,7 +243,7 @@
     function calcularPreco(custo, margemManual = null) {
       if (!custo || custo <= 0) return null;
 
-      // Se custo for maior ou igual ao último item da tabela
+      // Se custo >= último item da tabela, extrapola com base no ratio do último item
       if (custo >= precosBase[precosBase.length - 1].custo) {
         let precoMax = precosBase[precosBase.length - 1].preco;
         let custoMax = precosBase[precosBase.length - 1].custo;
@@ -251,13 +251,17 @@
         let precoBruto = ratio * custo;
         let precoCheio = fixPrice(precoBruto);
         let margemAtual = ((precoCheio - custo) / custo) * 100;
+
         if (margemManual) {
           margemAtual = margemManual;
           let precoTemp = custo * (1 + margemAtual / 100);
           precoCheio = fixPrice(precoTemp);
         }
+
+        // -20% na margem
         let margemReduzida = margemAtual * 0.8;
         let precoReduzido = fixPrice(custo * (1 + margemReduzida / 100));
+
         return {
           precoCheio,
           precoReduzido,
@@ -266,18 +270,21 @@
         };
       }
 
-      // Se custo for menor ou igual ao primeiro item da tabela
+      // Se custo <= primeiro item da tabela
       if (custo <= precosBase[0].custo) {
         let precoBruto = precosBase[0].preco;
         let precoCheio = fixPrice(precoBruto);
         let margemAtual = ((precoCheio - custo) / custo) * 100;
+
         if (margemManual) {
           margemAtual = margemManual;
           let precoTemp = custo * (1 + margemAtual / 100);
           precoCheio = fixPrice(precoTemp);
         }
+
         let margemReduzida = margemAtual * 0.8;
         let precoReduzido = fixPrice(custo * (1 + margemReduzida / 100));
+
         return {
           precoCheio,
           precoReduzido,
@@ -290,18 +297,24 @@
       for (let i = 0; i < precosBase.length - 1; i++) {
         const atual = precosBase[i];
         const proximo = precosBase[i + 1];
+
         if (custo >= atual.custo && custo < proximo.custo) {
+          // Interpolação linear
           let slope = (proximo.preco - atual.preco) / (proximo.custo - atual.custo);
           let precoInterpolado = atual.preco + slope * (custo - atual.custo);
+
           let precoCheio = fixPrice(precoInterpolado);
           let margemAtual = ((precoCheio - custo) / custo) * 100;
+
           if (margemManual) {
             margemAtual = margemManual;
             let precoTemp = custo * (1 + margemAtual / 100);
             precoCheio = fixPrice(precoTemp);
           }
+
           let margemReduzida = margemAtual * 0.8;
           let precoReduzido = fixPrice(custo * (1 + margemReduzida / 100));
+
           return {
             precoCheio,
             precoReduzido,
@@ -317,42 +330,50 @@
       let custo = parseFloat(document.getElementById("custo").value);
       let maoDeObra = parseFloat(document.getElementById("maoDeObra").value) || 0;
       let margemManual = parseFloat(document.getElementById("margemManual").value);
+
       let resultado = calcularPreco(custo, margemManual);
       if (resultado) {
-        // Preço Cheio
+        // =============== PREÇO CHEIO ===============
+        // % Margem
         if (margemManual) {
           document.getElementById("margemCheia").innerHTML = `<span class='highlight'>${margemManual.toFixed(2)}%</span>`;
         } else {
           document.getElementById("margemCheia").innerText = `${resultado.margemAtual}%`;
         }
-        document.getElementById("precoCheio").innerText =
-          `R$ ${resultado.precoCheio.toLocaleString("pt-BR", { minimumFractionDigits: 2 })}`;
+        // R$ Margem
         document.getElementById("precoMargemCheio").innerText =
           `R$ ${(resultado.precoCheio - custo).toLocaleString("pt-BR", { minimumFractionDigits: 2 })}`;
+        // Preço Final
+        document.getElementById("precoCheio").innerText =
+          `R$ ${resultado.precoCheio.toLocaleString("pt-BR", { minimumFractionDigits: 2 })}`;
 
-        // Preço Reduzido
+        // =============== PREÇO REDUZIDO ===============
+        // % Margem Reduzida
         document.getElementById("margemReduzida").innerText = `${resultado.margemReduzida}%`;
-        document.getElementById("precoReduzido").innerText =
-          `R$ ${resultado.precoReduzido.toLocaleString("pt-BR", { minimumFractionDigits: 2 })}`;
+        // R$ Margem Reduzida
         document.getElementById("precoMargemReduzido").innerText =
           `R$ ${(resultado.precoReduzido - custo).toLocaleString("pt-BR", { minimumFractionDigits: 2 })}`;
+        // Preço Final Reduzido
+        document.getElementById("precoReduzido").innerText =
+          `R$ ${resultado.precoReduzido.toLocaleString("pt-BR", { minimumFractionDigits: 2 })}`;
 
-        // Preços com Instalação
+        // =============== PREÇOS COM INSTALAÇÃO ===============
         if (maoDeObra > 0) {
           document.getElementById("maoDeObraCheioRow").style.display = "table-row";
           document.getElementById("maoDeObraReduzidoRow").style.display = "table-row";
 
+          // Preço Cheio com Instalação
           let precoCheioInst = resultado.precoCheio + maoDeObra;
-          let precoReduzidoInst = resultado.precoReduzido + maoDeObra;
-
-          // Para instalação, o custo permanece inalterado
           document.getElementById("precoCheioInstalacao").innerText =
             `R$ ${precoCheioInst.toLocaleString("pt-BR", { minimumFractionDigits: 2 })}`;
           document.getElementById("precoMargemCheioInst").innerText =
             `R$ ${(precoCheioInst - custo).toLocaleString("pt-BR", { minimumFractionDigits: 2 })}`;
           document.getElementById("margemCheiaInst").innerText =
+            // Margem% não muda (baseada apenas em custo x preço, sem incluir MO)
             `${resultado.margemAtual}%`;
 
+          // Preço Reduzido com Instalação
+          let precoReduzidoInst = resultado.precoReduzido + maoDeObra;
           document.getElementById("precoReduzidoInstalacao").innerText =
             `R$ ${precoReduzidoInst.toLocaleString("pt-BR", { minimumFractionDigits: 2 })}`;
           document.getElementById("precoMargemReduzidoInst").innerText =
@@ -360,16 +381,20 @@
           document.getElementById("margemReduzidaInst").innerText =
             `${resultado.margemReduzida}%`;
         } else {
+          // Se mão de obra não foi informada, esconde as linhas
           document.getElementById("maoDeObraCheioRow").style.display = "none";
           document.getElementById("maoDeObraReduzidoRow").style.display = "none";
         }
       } else {
+        // Limpa os campos se não houver resultado
         document.getElementById("margemCheia").innerText = "-";
-        document.getElementById("precoCheio").innerText = "-";
         document.getElementById("precoMargemCheio").innerText = "-";
+        document.getElementById("precoCheio").innerText = "-";
+
         document.getElementById("margemReduzida").innerText = "-";
-        document.getElementById("precoReduzido").innerText = "-";
         document.getElementById("precoMargemReduzido").innerText = "-";
+        document.getElementById("precoReduzido").innerText = "-";
+
         document.getElementById("maoDeObraCheioRow").style.display = "none";
         document.getElementById("maoDeObraReduzidoRow").style.display = "none";
       }
