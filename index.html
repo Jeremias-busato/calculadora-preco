@@ -86,26 +86,31 @@
         <tr>
           <th>Tipo</th>
           <th>% Margem</th>
+          <th>R$ Margem</th>
           <th>Preço Final (R$)</th>
         </tr>
         <tr>
           <td>Preço Cheio</td>
           <td id="margemCheia">-</td>
+          <td id="precoMargemCheio">-</td>
           <td id="precoCheio">-</td>
         </tr>
         <tr>
           <td>Preço Reduzido (-20%)</td>
           <td id="margemReduzida">-</td>
+          <td id="precoMargemReduzido">-</td>
           <td id="precoReduzido">-</td>
         </tr>
         <tr id="maoDeObraCheioRow" style="display: none;">
           <td>Preço Cheio com Instalação</td>
-          <td>-</td>
+          <td id="margemCheiaInst">-</td>
+          <td id="precoMargemCheioInst">-</td>
           <td id="precoCheioInstalacao">-</td>
         </tr>
         <tr id="maoDeObraReduzidoRow" style="display: none;">
           <td>Preço Reduzido com Instalação</td>
-          <td>-</td>
+          <td id="margemReduzidaInst">-</td>
+          <td id="precoMargemReduzidoInst">-</td>
           <td id="precoReduzidoInstalacao">-</td>
         </tr>
       </table>
@@ -113,8 +118,7 @@
   </div>
 
   <script>
-    // Tabela fornecida, custo -> preço base
-    // (pode ajustar/encurtar conforme desejar)
+    // Tabela fornecida: custo -> preço base
     const precosBase = [
       { custo: 1.00,   preco: 4.00 },
       { custo: 2.00,   preco: 7.69 },
@@ -231,7 +235,7 @@
 
     // Função para forçar o final em "7,00", arredondando para cima
     function fixPrice(valor) {
-      // Exemplo: valor = 232.62 => Math.ceil(232.62/10)=Math.ceil(23.262)=24 => 24*10 = 240, depois 240 - 3 = 237
+      // Exemplo: 232.62 => Math.ceil(232.62/10)=24, 24*10 = 240, 240-3 = 237
       return Math.ceil(valor / 10) * 10 - 3;
     }
 
@@ -239,7 +243,7 @@
     function calcularPreco(custo, margemManual = null) {
       if (!custo || custo <= 0) return null;
 
-      // Caso em que o custo é maior ou igual ao último item da tabela
+      // Se custo for maior ou igual ao último item da tabela
       if (custo >= precosBase[precosBase.length - 1].custo) {
         let precoMax = precosBase[precosBase.length - 1].preco;
         let custoMax = precosBase[precosBase.length - 1].custo;
@@ -247,17 +251,13 @@
         let precoBruto = ratio * custo;
         let precoCheio = fixPrice(precoBruto);
         let margemAtual = ((precoCheio - custo) / custo) * 100;
-
         if (margemManual) {
           margemAtual = margemManual;
           let precoTemp = custo * (1 + margemAtual / 100);
           precoCheio = fixPrice(precoTemp);
         }
-
-        // Alterado para -20%: margemReduzida = margemAtual * 0.8
         let margemReduzida = margemAtual * 0.8;
         let precoReduzido = fixPrice(custo * (1 + margemReduzida / 100));
-
         return {
           precoCheio,
           precoReduzido,
@@ -266,21 +266,18 @@
         };
       }
 
-      // Caso em que o custo é menor ou igual ao primeiro item da tabela
+      // Se custo for menor ou igual ao primeiro item da tabela
       if (custo <= precosBase[0].custo) {
         let precoBruto = precosBase[0].preco;
         let precoCheio = fixPrice(precoBruto);
         let margemAtual = ((precoCheio - custo) / custo) * 100;
-
         if (margemManual) {
           margemAtual = margemManual;
           let precoTemp = custo * (1 + margemAtual / 100);
           precoCheio = fixPrice(precoTemp);
         }
-
         let margemReduzida = margemAtual * 0.8;
         let precoReduzido = fixPrice(custo * (1 + margemReduzida / 100));
-
         return {
           precoCheio,
           precoReduzido,
@@ -293,22 +290,18 @@
       for (let i = 0; i < precosBase.length - 1; i++) {
         const atual = precosBase[i];
         const proximo = precosBase[i + 1];
-
         if (custo >= atual.custo && custo < proximo.custo) {
           let slope = (proximo.preco - atual.preco) / (proximo.custo - atual.custo);
           let precoInterpolado = atual.preco + slope * (custo - atual.custo);
           let precoCheio = fixPrice(precoInterpolado);
           let margemAtual = ((precoCheio - custo) / custo) * 100;
-
           if (margemManual) {
             margemAtual = margemManual;
             let precoTemp = custo * (1 + margemAtual / 100);
             precoCheio = fixPrice(precoTemp);
           }
-
           let margemReduzida = margemAtual * 0.8;
           let precoReduzido = fixPrice(custo * (1 + margemReduzida / 100));
-
           return {
             precoCheio,
             precoReduzido,
@@ -324,7 +317,6 @@
       let custo = parseFloat(document.getElementById("custo").value);
       let maoDeObra = parseFloat(document.getElementById("maoDeObra").value) || 0;
       let margemManual = parseFloat(document.getElementById("margemManual").value);
-
       let resultado = calcularPreco(custo, margemManual);
       if (resultado) {
         // Preço Cheio
@@ -335,14 +327,17 @@
         }
         document.getElementById("precoCheio").innerText =
           `R$ ${resultado.precoCheio.toLocaleString("pt-BR", { minimumFractionDigits: 2 })}`;
+        document.getElementById("precoMargemCheio").innerText =
+          `R$ ${(resultado.precoCheio - custo).toLocaleString("pt-BR", { minimumFractionDigits: 2 })}`;
 
         // Preço Reduzido
-        document.getElementById("margemReduzida").innerText =
-          `${resultado.margemReduzida}%`;
+        document.getElementById("margemReduzida").innerText = `${resultado.margemReduzida}%`;
         document.getElementById("precoReduzido").innerText =
           `R$ ${resultado.precoReduzido.toLocaleString("pt-BR", { minimumFractionDigits: 2 })}`;
+        document.getElementById("precoMargemReduzido").innerText =
+          `R$ ${(resultado.precoReduzido - custo).toLocaleString("pt-BR", { minimumFractionDigits: 2 })}`;
 
-        // Se houver valor de mão de obra, exibe os preços com instalação
+        // Preços com Instalação
         if (maoDeObra > 0) {
           document.getElementById("maoDeObraCheioRow").style.display = "table-row";
           document.getElementById("maoDeObraReduzidoRow").style.display = "table-row";
@@ -350,20 +345,31 @@
           let precoCheioInst = resultado.precoCheio + maoDeObra;
           let precoReduzidoInst = resultado.precoReduzido + maoDeObra;
 
+          // Para instalação, o custo permanece inalterado
           document.getElementById("precoCheioInstalacao").innerText =
             `R$ ${precoCheioInst.toLocaleString("pt-BR", { minimumFractionDigits: 2 })}`;
+          document.getElementById("precoMargemCheioInst").innerText =
+            `R$ ${(precoCheioInst - custo).toLocaleString("pt-BR", { minimumFractionDigits: 2 })}`;
+          document.getElementById("margemCheiaInst").innerText =
+            `${resultado.margemAtual}%`;
+
           document.getElementById("precoReduzidoInstalacao").innerText =
             `R$ ${precoReduzidoInst.toLocaleString("pt-BR", { minimumFractionDigits: 2 })}`;
+          document.getElementById("precoMargemReduzidoInst").innerText =
+            `R$ ${(precoReduzidoInst - custo).toLocaleString("pt-BR", { minimumFractionDigits: 2 })}`;
+          document.getElementById("margemReduzidaInst").innerText =
+            `${resultado.margemReduzida}%`;
         } else {
           document.getElementById("maoDeObraCheioRow").style.display = "none";
           document.getElementById("maoDeObraReduzidoRow").style.display = "none";
         }
       } else {
-        // Caso custo inválido, limpa os campos
         document.getElementById("margemCheia").innerText = "-";
         document.getElementById("precoCheio").innerText = "-";
+        document.getElementById("precoMargemCheio").innerText = "-";
         document.getElementById("margemReduzida").innerText = "-";
         document.getElementById("precoReduzido").innerText = "-";
+        document.getElementById("precoMargemReduzido").innerText = "-";
         document.getElementById("maoDeObraCheioRow").style.display = "none";
         document.getElementById("maoDeObraReduzidoRow").style.display = "none";
       }
