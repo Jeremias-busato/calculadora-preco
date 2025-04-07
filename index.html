@@ -94,14 +94,19 @@
           <td id="precoCheio">-</td>
         </tr>
         <tr>
-          <td>Preço Reduzido (-10%)</td>
+          <td>Preço Reduzido (-20%)</td>
           <td id="margemReduzida">-</td>
           <td id="precoReduzido">-</td>
         </tr>
-        <tr id="maoDeObraRow" style="display: none;">
-          <td>Preço com Instalação</td>
+        <tr id="maoDeObraCheioRow" style="display: none;">
+          <td>Preço Cheio com Instalação</td>
           <td>-</td>
-          <td id="precoComInstalacao">-</td>
+          <td id="precoCheioInstalacao">-</td>
+        </tr>
+        <tr id="maoDeObraReduzidoRow" style="display: none;">
+          <td>Preço Reduzido com Instalação</td>
+          <td>-</td>
+          <td id="precoReduzidoInstalacao">-</td>
         </tr>
       </table>
     </div>
@@ -226,7 +231,7 @@
 
     // Função para forçar o final em "7,00", arredondando para cima
     function fixPrice(valor) {
-      // Exemplo: valor=232.62 => ceil(232.62/10)=ceil(23.262)=24 => 24*10=240 => 240-3=237
+      // Exemplo: valor = 232.62 => Math.ceil(232.62/10)=Math.ceil(23.262)=24 => 24*10 = 240, depois 240 - 3 = 237
       return Math.ceil(valor / 10) * 10 - 3;
     }
 
@@ -234,25 +239,23 @@
     function calcularPreco(custo, margemManual = null) {
       if (!custo || custo <= 0) return null;
 
-      // Se custo for maior que o último item da tabela
+      // Caso em que o custo é maior ou igual ao último item da tabela
       if (custo >= precosBase[precosBase.length - 1].custo) {
         let precoMax = precosBase[precosBase.length - 1].preco;
         let custoMax = precosBase[precosBase.length - 1].custo;
-        // Extrapolação simples: mantém a mesma razão do último ponto
         let ratio = precoMax / custoMax;
         let precoBruto = ratio * custo;
         let precoCheio = fixPrice(precoBruto);
         let margemAtual = ((precoCheio - custo) / custo) * 100;
 
-        // Se existir margemManual, sobrescreve
         if (margemManual) {
           margemAtual = margemManual;
           let precoTemp = custo * (1 + margemAtual / 100);
           precoCheio = fixPrice(precoTemp);
         }
 
-        // Preço reduzido = -10% na margem
-        let margemReduzida = margemAtual * 0.9;
+        // Alterado para -20%: margemReduzida = margemAtual * 0.8
+        let margemReduzida = margemAtual * 0.8;
         let precoReduzido = fixPrice(custo * (1 + margemReduzida / 100));
 
         return {
@@ -263,9 +266,8 @@
         };
       }
 
-      // Se custo for menor que o primeiro item da tabela
+      // Caso em que o custo é menor ou igual ao primeiro item da tabela
       if (custo <= precosBase[0].custo) {
-        // Usa o primeiro par
         let precoBruto = precosBase[0].preco;
         let precoCheio = fixPrice(precoBruto);
         let margemAtual = ((precoCheio - custo) / custo) * 100;
@@ -276,7 +278,7 @@
           precoCheio = fixPrice(precoTemp);
         }
 
-        let margemReduzida = margemAtual * 0.9;
+        let margemReduzida = margemAtual * 0.8;
         let precoReduzido = fixPrice(custo * (1 + margemReduzida / 100));
 
         return {
@@ -287,31 +289,24 @@
         };
       }
 
-      // Caso geral: encontra intervalo e interpola
+      // Caso geral: encontra o intervalo e interpola
       for (let i = 0; i < precosBase.length - 1; i++) {
         const atual = precosBase[i];
         const proximo = precosBase[i + 1];
 
         if (custo >= atual.custo && custo < proximo.custo) {
-          // Interpolação linear
           let slope = (proximo.preco - atual.preco) / (proximo.custo - atual.custo);
           let precoInterpolado = atual.preco + slope * (custo - atual.custo);
-
-          // Ajuste para final 7,00
           let precoCheio = fixPrice(precoInterpolado);
-
-          // Margem atual
           let margemAtual = ((precoCheio - custo) / custo) * 100;
 
-          // Se existir margemManual, recalcula
           if (margemManual) {
             margemAtual = margemManual;
             let precoTemp = custo * (1 + margemAtual / 100);
             precoCheio = fixPrice(precoTemp);
           }
 
-          // Margem reduzida em -10%
-          let margemReduzida = margemAtual * 0.9;
+          let margemReduzida = margemAtual * 0.8;
           let precoReduzido = fixPrice(custo * (1 + margemReduzida / 100));
 
           return {
@@ -332,38 +327,45 @@
 
       let resultado = calcularPreco(custo, margemManual);
       if (resultado) {
-        // Preenche a tabela
+        // Preço Cheio
         if (margemManual) {
           document.getElementById("margemCheia").innerHTML = `<span class='highlight'>${margemManual.toFixed(2)}%</span>`;
         } else {
           document.getElementById("margemCheia").innerText = `${resultado.margemAtual}%`;
         }
-
         document.getElementById("precoCheio").innerText =
           `R$ ${resultado.precoCheio.toLocaleString("pt-BR", { minimumFractionDigits: 2 })}`;
 
+        // Preço Reduzido
         document.getElementById("margemReduzida").innerText =
           `${resultado.margemReduzida}%`;
-
         document.getElementById("precoReduzido").innerText =
           `R$ ${resultado.precoReduzido.toLocaleString("pt-BR", { minimumFractionDigits: 2 })}`;
 
-        // Exibe preço com instalação
+        // Se houver valor de mão de obra, exibe os preços com instalação
         if (maoDeObra > 0) {
-          document.getElementById("maoDeObraRow").style.display = "table-row";
-          let precoComInstalacao = resultado.precoCheio + maoDeObra;
-          document.getElementById("precoComInstalacao").innerText =
-            `R$ ${precoComInstalacao.toLocaleString("pt-BR", { minimumFractionDigits: 2 })}`;
+          document.getElementById("maoDeObraCheioRow").style.display = "table-row";
+          document.getElementById("maoDeObraReduzidoRow").style.display = "table-row";
+
+          let precoCheioInst = resultado.precoCheio + maoDeObra;
+          let precoReduzidoInst = resultado.precoReduzido + maoDeObra;
+
+          document.getElementById("precoCheioInstalacao").innerText =
+            `R$ ${precoCheioInst.toLocaleString("pt-BR", { minimumFractionDigits: 2 })}`;
+          document.getElementById("precoReduzidoInstalacao").innerText =
+            `R$ ${precoReduzidoInst.toLocaleString("pt-BR", { minimumFractionDigits: 2 })}`;
         } else {
-          document.getElementById("maoDeObraRow").style.display = "none";
+          document.getElementById("maoDeObraCheioRow").style.display = "none";
+          document.getElementById("maoDeObraReduzidoRow").style.display = "none";
         }
       } else {
-        // Caso não encontre ou custo inválido
+        // Caso custo inválido, limpa os campos
         document.getElementById("margemCheia").innerText = "-";
         document.getElementById("precoCheio").innerText = "-";
         document.getElementById("margemReduzida").innerText = "-";
         document.getElementById("precoReduzido").innerText = "-";
-        document.getElementById("maoDeObraRow").style.display = "none";
+        document.getElementById("maoDeObraCheioRow").style.display = "none";
+        document.getElementById("maoDeObraReduzidoRow").style.display = "none";
       }
     }
   </script>
