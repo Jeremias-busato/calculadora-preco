@@ -5,44 +5,39 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Calculadora de Preços</title>
   <style>
-    /* Zera margens e padding do body */
+    /* Reset básico */
     * {
       box-sizing: border-box;
-    }
-    html, body {
-      margin: 0; 
+      margin: 0;
       padding: 0;
+    }
+    body {
       font-family: Arial, sans-serif;
       background-color: #ffffff;
       color: #000;
+      padding: 20px;
     }
 
-    /* 
-      Div principal que agrupa a calculadora (esquerda) e 
-      a tabela de mão de obra (direita) lado a lado
-    */
+    /* Container principal: Calculadora (esquerda) + Tabela de Mão de Obra (direita) */
     .main-wrapper {
       display: flex;
       flex-direction: row;
       justify-content: center;
       align-items: flex-start;
-      min-height: 100vh; /* Para ocupar altura total da janela */
-      padding: 20px;     /* Espaço interno */
-      gap: 20px;         /* Espaço entre a calculadora e a tabela */
+      gap: 20px;
+      width: 100%;
+      max-width: 1600px; /* Ajuste se quiser aumentar/diminuir o limite */
+      margin: 0 auto;
     }
 
-    /* 
-      Container da calculadora 
-      (mantém toda a estrutura original) 
-    */
+    /* =================== CALCULADORA =================== */
     .container {
-      flex: 1;                   /* Faz este bloco crescer para ocupar o espaço disponível */
-      max-width: 600px;          /* Largura máxima desejada */
+      flex: 1;  /* Ocupar espaço disponível */
+      max-width: 600px;
       display: flex;
       flex-direction: column;
       align-items: center;
     }
-
     .header {
       display: flex;
       align-items: center;
@@ -51,16 +46,14 @@
       margin-bottom: 10px;
     }
     .header img {
-      max-height: 60px; /* Diminuir um pouco para caber melhor */
+      max-height: 60px;
       margin-right: 10px;
     }
     .header h1 {
-      font-size: 24px;  /* Diminuir tamanho para caber melhor */
-      margin: 0;
+      font-size: 24px;
     }
 
-    /* Blocos de entrada e resultado */
-    .input-container, 
+    .input-container,
     .result-container {
       width: 100%;
       padding: 10px;
@@ -69,8 +62,6 @@
       margin: 10px 0;
       background-color: #fff;
     }
-
-    /* Inputs numéricos */
     .input-container label {
       display: block;
       margin-top: 5px;
@@ -84,9 +75,8 @@
       margin-top: 5px;
     }
 
-    /* Tabela de resultados */
     .result-container {
-      font-size: 16px; /* Diminuir para 16px */
+      font-size: 16px;
       font-weight: bold;
     }
     .result-container table {
@@ -98,7 +88,7 @@
       border: 1px solid #000;
       padding: 8px;
       text-align: center;
-      font-weight: normal;
+      font-weight: normal; /* Normal de início */
     }
     .result-container th {
       background-color: #eee;
@@ -108,25 +98,23 @@
       font-weight: bold;
     }
 
-    /* Bloco lateral da tabela de mão de obra */
+    /* =================== TABELA DE MÃO DE OBRA =================== */
     .tabela-mao-de-obra {
-      flex: 0 0 300px; /* Largura fixa de 300px */
+      flex: 0 0 260px; /* Diminuir largura para evitar barra de rolagem */
       border: 2px solid #000;
       border-radius: 10px;
       background-color: #f9f9f9;
-      height: fit-content;
-      max-height: 90vh; /* Para não ocupar mais que 90% da tela, se for muito grande */
-      overflow-y: auto; /* Se a tabela for muito longa, rola dentro do bloco */
       padding: 10px;
+      height: fit-content;
     }
     .tabela-mao-de-obra h2 {
       text-align: center;
-      margin: 0 0 10px;
-      font-size: 18px; 
+      margin-bottom: 10px;
+      font-size: 16px;
     }
     .tabela-mao-de-obra table {
       width: 100%;
-      font-size: 14px; 
+      font-size: 13px; /* Fonte menor para caber sem rolagem */
       border-collapse: collapse;
     }
     .tabela-mao-de-obra th,
@@ -135,23 +123,18 @@
       padding: 6px;
       text-align: center;
     }
-
   </style>
 </head>
 <body>
 
   <div class="main-wrapper">
-    
-    <!-- ================= BLOCO DA CALCULADORA ================== -->
+    <!-- ================== CALCULADORA (ESQUERDA) ================== -->
     <div class="container">
-
-      <!-- Cabeçalho -->
       <div class="header">
         <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSp51OGC2YtYl1F-J8L75fuHK3XhI9l7V898A&s" alt="Logo">
         <h1>Calculadora de Preços</h1>
       </div>
       
-      <!-- Entradas do usuário -->
       <div class="input-container">
         <label>Digite o custo do produto (R$):</label>
         <input type="number" id="custo" oninput="calcular()" min="0" step="0.01">
@@ -163,7 +146,6 @@
         <input type="number" id="margemManual" oninput="calcular()" min="0" step="0.1">
       </div>
 
-      <!-- Resultados -->
       <div class="result-container">
         <table>
           <thead>
@@ -182,7 +164,7 @@
               <td id="precoCheio">-</td>
             </tr>
             <tr>
-              <td>Preço Reduzido (-20%)</td>
+              <td>Preço Reduzido (-15%)</td>
               <td id="margemReduzida">-</td>
               <td id="precoMargemReduzido">-</td>
               <td id="precoReduzido">-</td>
@@ -203,16 +185,16 @@
         </table>
       </div>
     </div>
-    <!-- ================= FIM DA CALCULADORA ================== -->
+    <!-- ================== FIM CALCULADORA ================== -->
 
-    <!-- =========== TABELA DE MÃO DE OBRA =========== -->
+    <!-- ================== TABELA DE MÃO DE OBRA (DIREITA) ================== -->
     <div class="tabela-mao-de-obra">
       <h2>Tabela de Mão de Obra</h2>
       <table>
         <thead>
           <tr>
             <th>Quant. Horas</th>
-            <th>Preço/hora</th>
+            <th>R$/hora</th>
             <th>Total (R$)</th>
           </tr>
         </thead>
@@ -242,50 +224,46 @@
         </tbody>
       </table>
     </div>
-    <!-- =========== FIM DA TABELA DE MÃO DE OBRA =========== -->
+    <!-- ================== FIM TABELA DE MÃO DE OBRA ================== -->
 
-  </div> <!-- Fim .main-wrapper -->
+  </div><!-- fim .main-wrapper -->
 
   <script>
-    // =========================================
-    // TABELA DE PREÇOS GRADATIVA (Exemplo)
-    // =========================================
+    // =================== NOVA TABELA GRADATIVA ===================
+    // - custo 1 => venda 4
+    // - custo 100 => venda 230
+    // - custo 200 => venda 360
+    // - custo 300 => venda 480
+    // - custo 500 => venda 720
+    // - custo 700 => venda 940
+    // - custo 1000 => venda 1330
+    // - custo 10000 => venda 13287
     const precosBase = [
-      { custo: 1.00,   preco: 4.00 },
-      { custo: 2.00,   preco: 7.69 },
-      { custo: 3.00,   preco: 11.39 },
-      { custo: 4.00,   preco: 14.98 },
-      { custo: 5.00,   preco: 18.48 },
-      { custo: 6.00,   preco: 21.88 },
-      { custo: 7.00,   preco: 25.17 },
-      { custo: 8.00,   preco: 28.37 },
-      { custo: 9.00,   preco: 31.47 },
-      { custo: 10.00,  preco: 34.46 },
-      { custo: 12.00,  preco: 40.75 },
-      { custo: 14.00,  preco: 46.85 },
-      { custo: 16.00,  preco: 52.74 },
-      { custo: 18.00,  preco: 58.43 },
-      { custo: 20.00,  preco: 63.92 },
-      // ... continue adicionando até custo 10000 ...
-      { custo: 10000.00, preco: 12887.00 }
+      { custo: 1,     preco: 4    },
+      { custo: 100,   preco: 230  },
+      { custo: 200,   preco: 360  },
+      { custo: 300,   preco: 480  },
+      { custo: 500,   preco: 720  },
+      { custo: 700,   preco: 940  },
+      { custo: 1000,  preco: 1330 },
+      { custo: 10000, preco: 13287}
     ];
 
-    // Função para forçar o final em \"7,00\", arredondando para cima
+    // Função para forçar o final em \"7,00\" (padrão anterior)
     function fixPrice(valor) {
       // Exemplo: valor=232.62 => ceil(232.62/10)=ceil(23.262)=24 => 24*10=240 => 240-3=237
       return Math.ceil(valor / 10) * 10 - 3;
     }
 
-    // Faz interpolação linear dentro da tabela
+    // Interpola linearmente dentro da tabela
     function calcularPreco(custo, margemManual = null) {
       if (!custo || custo <= 0) return null;
 
-      // Se custo >= último item da tabela, extrapola com base no ratio do último item
+      // Se custo >= último item da tabela (>= 10000)
       if (custo >= precosBase[precosBase.length - 1].custo) {
-        let precoMax = precosBase[precosBase.length - 1].preco;
-        let custoMax = precosBase[precosBase.length - 1].custo;
-        let ratio = precoMax / custoMax; // Ex: 12887 / 10000 = 1.2887
-        let precoBruto = ratio * custo;  // Extrapolação
+        let ultimo = precosBase[precosBase.length - 1];  // { custo: 10000, preco: 13287 }
+        let ratio = ultimo.preco / ultimo.custo;         // Ex.: 13287 / 10000 = 1.3287
+        let precoBruto = ratio * custo;                  // Extrapolação
         let precoCheio = fixPrice(precoBruto);
         let margemAtual = ((precoCheio - custo) / custo) * 100;
 
@@ -295,8 +273,8 @@
           precoCheio = fixPrice(precoTemp);
         }
 
-        // -20% na margem
-        let margemReduzida = margemAtual * 0.8;
+        // Margem reduzida = -15% => 85% da margem
+        let margemReduzida = margemAtual * 0.85;
         let precoReduzido = fixPrice(custo * (1 + margemReduzida / 100));
 
         return {
@@ -307,9 +285,9 @@
         };
       }
 
-      // Se custo <= primeiro item da tabela
+      // Se custo <= primeiro item da tabela (<= 1)
       if (custo <= precosBase[0].custo) {
-        let precoBruto = precosBase[0].preco;
+        let precoBruto = precosBase[0].preco; // 4
         let precoCheio = fixPrice(precoBruto);
         let margemAtual = ((precoCheio - custo) / custo) * 100;
 
@@ -319,9 +297,9 @@
           precoCheio = fixPrice(precoTemp);
         }
 
-        let margemReduzida = margemAtual * 0.8;
+        let margemReduzida = margemAtual * 0.85;
         let precoReduzido = fixPrice(custo * (1 + margemReduzida / 100));
-
+        
         return {
           precoCheio,
           precoReduzido,
@@ -330,11 +308,11 @@
         };
       }
 
-      // Caso geral: encontra o intervalo e interpola
+      // Caso geral: encontra em qual intervalo [i, i+1] o custo está
       for (let i = 0; i < precosBase.length - 1; i++) {
         const atual = precosBase[i];
         const proximo = precosBase[i + 1];
-
+        
         if (custo >= atual.custo && custo < proximo.custo) {
           // Interpolação linear
           let slope = (proximo.preco - atual.preco) / (proximo.custo - atual.custo);
@@ -349,7 +327,7 @@
             precoCheio = fixPrice(precoTemp);
           }
 
-          let margemReduzida = margemAtual * 0.8;
+          let margemReduzida = margemAtual * 0.85; // -15%
           let precoReduzido = fixPrice(custo * (1 + margemReduzida / 100));
 
           return {
@@ -371,7 +349,6 @@
       let resultado = calcularPreco(custo, margemManual);
       if (resultado) {
         // =============== PREÇO CHEIO ===============
-        // % Margem
         if (margemManual) {
           document.getElementById('margemCheia').innerHTML =
             `<span class='highlight'>${margemManual.toFixed(2)}%</span>`;
@@ -379,7 +356,7 @@
           document.getElementById('margemCheia').innerText =
             `${resultado.margemAtual}%`;
         }
-        // R$ Margem
+        // R$ Margem (PreçoCheio - custo)
         document.getElementById('precoMargemCheio').innerText =
           `R$ ${(resultado.precoCheio - custo).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`;
         // Preço Final
@@ -387,18 +364,16 @@
           `R$ ${resultado.precoCheio.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`;
 
         // =============== PREÇO REDUZIDO ===============
-        // % Margem Reduzida
         document.getElementById('margemReduzida').innerText =
           `${resultado.margemReduzida}%`;
-        // R$ Margem Reduzida
         document.getElementById('precoMargemReduzido').innerText =
           `R$ ${(resultado.precoReduzido - custo).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`;
-        // Preço Final Reduzido
         document.getElementById('precoReduzido').innerText =
           `R$ ${resultado.precoReduzido.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`;
 
         // =============== PREÇOS COM INSTALAÇÃO ===============
         if (maoDeObra > 0) {
+          // Mostrar as linhas
           document.getElementById('maoDeObraCheioRow').style.display = 'table-row';
           document.getElementById('maoDeObraReduzidoRow').style.display = 'table-row';
 
@@ -408,7 +383,6 @@
             `R$ ${precoCheioInst.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`;
           document.getElementById('precoMargemCheioInst').innerText =
             `R$ ${(precoCheioInst - custo).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`;
-          // A margem% (sobre custo) não muda pela MO
           document.getElementById('margemCheiaInst').innerText =
             `${resultado.margemAtual}%`;
 
@@ -420,25 +394,39 @@
             `R$ ${(precoReduzidoInst - custo).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`;
           document.getElementById('margemReduzidaInst').innerText =
             `${resultado.margemReduzida}%`;
+
+          // Coloca em negrito as linhas de resultado que envolvem mão de obra
+          document.querySelectorAll('#maoDeObraCheioRow td, #maoDeObraReduzidoRow td')
+            .forEach(td => {
+              td.style.fontWeight = 'bold';
+            });
         } else {
-          // Se mão de obra não foi informada, esconde as linhas extras
+          // Esconder as linhas
           document.getElementById('maoDeObraCheioRow').style.display = 'none';
           document.getElementById('maoDeObraReduzidoRow').style.display = 'none';
+
+          // Remove possível negrito residual
+          document.querySelectorAll('#maoDeObraCheioRow td, #maoDeObraReduzidoRow td')
+            .forEach(td => {
+              td.style.fontWeight = 'normal';
+            });
         }
+
       } else {
-        // Limpa os campos se não houver resultado (custo inválido, etc.)
+        // Limpa os campos se não houver resultado
         document.getElementById('margemCheia').innerText = '-';
         document.getElementById('precoMargemCheio').innerText = '-';
         document.getElementById('precoCheio').innerText = '-';
-        
+
         document.getElementById('margemReduzida').innerText = '-';
         document.getElementById('precoMargemReduzido').innerText = '-';
         document.getElementById('precoReduzido').innerText = '-';
-        
+
         document.getElementById('maoDeObraCheioRow').style.display = 'none';
         document.getElementById('maoDeObraReduzidoRow').style.display = 'none';
       }
     }
   </script>
+
 </body>
 </html>
