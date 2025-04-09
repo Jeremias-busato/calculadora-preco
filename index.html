@@ -1,183 +1,69 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Calculadora de Preços</title>
-  <style>
-      body {
-          font-family: Arial, sans-serif;
-          text-align: center;
-          background-color: #ffffff;
-          color: #000;
-          padding: 20px;
-      }
-      .container {
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          justify-content: center;
-      }
-      .header {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          width: 100%;
-      }
-      .header img {
-          max-height: 100px;
-          margin-right: 20px;
-      }
-      .input-container, .result-container {
-          width: 50%;
-          padding: 20px;
-          border: 2px solid #000;
-          border-radius: 10px;
-          margin: 10px;
-          background-color: #fff;
-      }
-      input {
-          width: 100%;
-          padding: 10px;
-          font-size: 20px;
-          margin-top: 10px;
-      }
-      .result-container {
-          font-size: 22px;
-          font-weight: bold;
-      }
-      .highlight {
-          color: #ff6600;
-          font-weight: bold;
-      }
-      table {
-          width: 100%;
-          font-size: 22px;
-          margin-top: 10px;
-          border-collapse: collapse;
-      }
-      th, td {
-          border: 1px solid #000;
-          padding: 10px;
-          text-align: center;
-      }
-  </style>
-</head>
-<body>
-  <div class="container">
-    <div class="header">
-      <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSp51OGC2YtYl1F-J8L75fuHK3XhI9l7V898A&s" alt="Logo">
-      <h1>Calculadora de Preços</h1>
-    </div>
-    
-    <div class="input-container">
-      <label>Digite o custo do produto (R$):</label>
-      <input type="number" id="custo" oninput="calcular()" min="0" step="0.01">
-      
-      <label>Digite o valor da mão de obra (R$):</label>
-      <input type="number" id="maoDeObra" oninput="calcular()" min="0" step="0.01">
-      
-      <label>Insira uma margem diferente da atual (%):</label>
-      <input type="number" id="margemManual" oninput="calcular()" min="0" step="0.1">
-    </div>
+<script>
+  function calcular() {
+    const custo = parseFloat(document.getElementById('custo').value) || 0;
+    const maoDeObra = parseFloat(document.getElementById('maoDeObra').value) || 0;
+    const margemManual = parseFloat(document.getElementById('margemManual').value);
 
-    <div class="result-container">
-      <table>
-        <tr>
-          <th>Tipo</th>
-          <th>% Margem</th>
-          <th>R$ Margem</th>
-          <th>Preço Final (R$)</th>
-        </tr>
-        <tr>
-          <td>Preço Cheio</td>
-          <td id="margemCheia">-</td>
-          <td id="precoMargemCheio">-</td>
-          <td id="precoCheio">-</td>
-        </tr>
-        <tr>
-          <td>Preço Reduzido (-20%)</td>
-          <td id="margemReduzida">-</td>
-          <td id="precoMargemReduzido">-</td>
-          <td id="precoReduzido">-</td>
-        </tr>
-        <tr id="maoDeObraCheioRow" style="display: none;">
-          <td>Preço Cheio com Instalação</td>
-          <td id="margemCheiaInst">-</td>
-          <td id="precoMargemCheioInst">-</td>
-          <td id="precoCheioInstalacao">-</td>
-        </tr>
-        <tr id="maoDeObraReduzidoRow" style="display: none;">
-          <td>Preço Reduzido com Instalação</td>
-          <td id="margemReduzidaInst">-</td>
-          <td id="precoMargemReduzidoInst">-</td>
-          <td id="precoReduzidoInstalacao">-</td>
-        </tr>
-      </table>
-    </div>
-  </div>
-
-  <script>
-    const precosBase = [ /* ... a tabela completa vai aqui (já inserida por você) ... */ ];
-
-    function getPrecoBase(custo) {
-      let anterior = precosBase[0];
-      for (let i = 1; i < precosBase.length; i++) {
+    // Função para interpolar o preço baseado no custo
+    function obterPrecoBase(custo) {
+      for (let i = 0; i < precosBase.length - 1; i++) {
         const atual = precosBase[i];
+        const proximo = precosBase[i + 1];
+
         if (custo === atual.custo) return atual.preco;
-        if (custo < atual.custo) {
-          const interpolado = anterior.preco + (atual.preco - anterior.preco) * ((custo - anterior.custo) / (atual.custo - anterior.custo));
-          return parseFloat(interpolado.toFixed(2));
+
+        if (custo > atual.custo && custo < proximo.custo) {
+          // Interpolação linear
+          const proporcao = (custo - atual.custo) / (proximo.custo - atual.custo);
+          return atual.preco + proporcao * (proximo.preco - atual.preco);
         }
-        anterior = atual;
       }
-      return anterior.preco;
+
+      // Se custo for maior que último item, extrapola linearmente
+      const penultimo = precosBase[precosBase.length - 2];
+      const ultimo = precosBase[precosBase.length - 1];
+      const proporcaoFinal = (custo - penultimo.custo) / (ultimo.custo - penultimo.custo);
+      return penultimo.preco + proporcaoFinal * (ultimo.preco - penultimo.preco);
     }
 
-    function calcularMargem(custo, precoFinal) {
-      if (precoFinal === 0) return 0;
-      return ((precoFinal - custo) / precoFinal) * 100;
+    const precoCheio = margemManual
+      ? custo * (1 + margemManual / 100)
+      : obterPrecoBase(custo);
+
+    const margemCheia = ((precoCheio - custo) / custo) * 100;
+    const valorMargemCheia = precoCheio - custo;
+
+    const precoReduzido = precoCheio * 0.8;
+    const margemReduzida = ((precoReduzido - custo) / custo) * 100;
+    const valorMargemReduzida = precoReduzido - custo;
+
+    // Atualiza os campos da tabela
+    document.getElementById('margemCheia').textContent = isFinite(margemCheia) ? margemCheia.toFixed(1) + '%' : '-';
+    document.getElementById('precoMargemCheio').textContent = valorMargemCheia.toFixed(2);
+    document.getElementById('precoCheio').textContent = precoCheio.toFixed(2);
+
+    document.getElementById('margemReduzida').textContent = isFinite(margemReduzida) ? margemReduzida.toFixed(1) + '%' : '-';
+    document.getElementById('precoMargemReduzido').textContent = valorMargemReduzida.toFixed(2);
+    document.getElementById('precoReduzido').textContent = precoReduzido.toFixed(2);
+
+    if (maoDeObra > 0) {
+      document.getElementById('maoDeObraCheioRow').style.display = '';
+      document.getElementById('maoDeObraReduzidoRow').style.display = '';
+
+      document.getElementById('precoCheioInstalacao').textContent = (precoCheio + maoDeObra).toFixed(2);
+      document.getElementById('precoReduzidoInstalacao').textContent = (precoReduzido + maoDeObra).toFixed(2);
+
+      const margemInstCheia = ((precoCheio + maoDeObra - custo) / custo) * 100;
+      const margemInstReduzida = ((precoReduzido + maoDeObra - custo) / custo) * 100;
+
+      document.getElementById('margemCheiaInst').textContent = isFinite(margemInstCheia) ? margemInstCheia.toFixed(1) + '%' : '-';
+      document.getElementById('margemReduzidaInst').textContent = isFinite(margemInstReduzida) ? margemInstReduzida.toFixed(1) + '%' : '-';
+
+      document.getElementById('precoMargemCheioInst').textContent = (precoCheio + maoDeObra - custo).toFixed(2);
+      document.getElementById('precoMargemReduzidoInst').textContent = (precoReduzido + maoDeObra - custo).toFixed(2);
+    } else {
+      document.getElementById('maoDeObraCheioRow').style.display = 'none';
+      document.getElementById('maoDeObraReduzidoRow').style.display = 'none';
     }
-
-    function calcular() {
-      const custo = parseFloat(document.getElementById("custo").value) || 0;
-      const maoDeObra = parseFloat(document.getElementById("maoDeObra").value) || 0;
-      const margemManual = parseFloat(document.getElementById("margemManual").value);
-
-      const precoBase = margemManual > 0
-        ? parseFloat((custo / (1 - margemManual / 100)).toFixed(2))
-        : getPrecoBase(custo);
-
-      const precoReduzido = parseFloat((precoBase * 0.8).toFixed(2));
-
-      document.getElementById("precoCheio").textContent = precoBase.toFixed(2);
-      document.getElementById("margemCheia").textContent = calcularMargem(custo, precoBase).toFixed(2) + "%";
-      document.getElementById("precoMargemCheio").textContent = (precoBase - custo).toFixed(2);
-
-      document.getElementById("precoReduzido").textContent = precoReduzido.toFixed(2);
-      document.getElementById("margemReduzida").textContent = calcularMargem(custo, precoReduzido).toFixed(2) + "%";
-      document.getElementById("precoMargemReduzido").textContent = (precoReduzido - custo).toFixed(2);
-
-      if (maoDeObra > 0) {
-        document.getElementById("maoDeObraCheioRow").style.display = "";
-        document.getElementById("maoDeObraReduzidoRow").style.display = "";
-
-        const precoCheioInst = precoBase + maoDeObra;
-        const precoReduzidoInst = precoReduzido + maoDeObra;
-
-        document.getElementById("precoCheioInstalacao").textContent = precoCheioInst.toFixed(2);
-        document.getElementById("precoReduzidoInstalacao").textContent = precoReduzidoInst.toFixed(2);
-
-        document.getElementById("margemCheiaInst").textContent = calcularMargem(custo, precoCheioInst).toFixed(2) + "%";
-        document.getElementById("margemReduzidaInst").textContent = calcularMargem(custo, precoReduzidoInst).toFixed(2) + "%";
-
-        document.getElementById("precoMargemCheioInst").textContent = (precoCheioInst - custo).toFixed(2);
-        document.getElementById("precoMargemReduzidoInst").textContent = (precoReduzidoInst - custo).toFixed(2);
-      } else {
-        document.getElementById("maoDeObraCheioRow").style.display = "none";
-        document.getElementById("maoDeObraReduzidoRow").style.display = "none";
-      }
-    }
-  </script>
-</body>
-</html>
+  }
+</script>
