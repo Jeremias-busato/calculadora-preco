@@ -5,75 +5,491 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Calculadora de Preços</title>
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      display: flex;
-      flex-direction: row;
-      background-color: #ffffff;
-      color: #000;
-      padding: 20px;
-    }
-    .container {
-      flex: 2;
-    }
-    .tabela-mao-de-obra {
-      flex: 1;
-      margin-left: 20px;
-      border: 2px solid #000;
-      border-radius: 10px;
-      padding: 10px;
-      background-color: #f9f9f9;
-      max-height: 90vh;
-      overflow-y: auto;
-    }
-    .tabela-mao-de-obra h2 {
-      text-align: center;
-    }
-    table {
-      width: 100%;
-      font-size: 16px;
-      border-collapse: collapse;
-      margin-top: 10px;
-    }
-    th, td {
-      border: 1px solid #000;
-      padding: 8px;
-      text-align: center;
-    }
+      body {
+          font-family: Arial, sans-serif;
+          text-align: center;
+          background-color: #ffffff;
+          color: #000;
+          padding: 20px;
+          margin: 0;
+      }
+      /* 
+        Container principal: disposto em linha (flex), 
+        com a calculadora à esquerda e a tabela de mão de obra à direita
+      */
+      .main-wrapper {
+          display: flex;
+          flex-direction: row;
+          justify-content: center;
+          align-items: flex-start; /* Mantém o topo alinhado */
+      }
+      .container {
+          /* Mantém a estrutura original da calculadora */
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          width: 60%; /* Ajuste conforme desejado */
+          margin-right: 20px;
+      }
+      .header {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 100%;
+      }
+      .header img {
+          max-height: 100px;
+          margin-right: 20px;
+      }
+      .input-container, .result-container {
+          width: 50%;
+          padding: 20px;
+          border: 2px solid #000;
+          border-radius: 10px;
+          margin: 10px;
+          background-color: #fff;
+      }
+      input {
+          width: 100%;
+          padding: 10px;
+          font-size: 20px;
+          margin-top: 10px;
+      }
+      .result-container {
+          font-size: 22px;
+          font-weight: bold;
+      }
+      .highlight {
+          color: #ff6600;
+          font-weight: bold;
+      }
+      table {
+          width: 100%;
+          font-size: 22px;
+          margin-top: 10px;
+          border-collapse: collapse;
+      }
+      th, td {
+          border: 1px solid #000;
+          padding: 10px;
+          text-align: center;
+      }
+      /* Bloco lateral da tabela de mão de obra */
+      .tabela-mao-de-obra {
+          width: 35%; /* Ajuste conforme desejado */
+          border: 2px solid #000;
+          border-radius: 10px;
+          padding: 10px;
+          background-color: #f9f9f9;
+          margin-top: 10px;
+          margin-left: auto;
+      }
+      .tabela-mao-de-obra h2 {
+          text-align: center;
+          font-size: 24px;
+          margin-bottom: 10px;
+      }
+      .tabela-mao-de-obra table {
+          font-size: 16px;
+          margin: 0 auto;
+      }
+      .tabela-mao-de-obra th, 
+      .tabela-mao-de-obra td {
+          padding: 8px;
+      }
   </style>
 </head>
 <body>
-  <div class="container">
-    <!-- Aqui vai o seu código original com a calculadora -->
-  </div>
 
-  <div class="tabela-mao-de-obra">
-    <h2>Tabela de Mão de Obra</h2>
-    <table>
-      <tr><th>Quant Horas</th><th>Preço por hora</th><th>Preço total</th></tr>
-      <tr><td>1</td><td>180,00</td><td>180,00</td></tr>
-      <tr><td>1,5</td><td>175,00</td><td>270,00</td></tr>
-      <tr><td>2</td><td>170,00</td><td>360,00</td></tr>
-      <tr><td>2,5</td><td>165,00</td><td>450,00</td></tr>
-      <tr><td>3</td><td>160,00</td><td>540,00</td></tr>
-      <tr><td>3,5</td><td>155,00</td><td>630,00</td></tr>
-      <tr><td>4</td><td>150,00</td><td>720,00</td></tr>
-      <tr><td>4,5</td><td>146,00</td><td>810,00</td></tr>
-      <tr><td>5</td><td>142,00</td><td>900,00</td></tr>
-      <tr><td>5,5</td><td>138,00</td><td>990,00</td></tr>
-      <tr><td>6</td><td>134,00</td><td>1.080,00</td></tr>
-      <tr><td>6,5</td><td>131,00</td><td>1.170,00</td></tr>
-      <tr><td>7</td><td>127,00</td><td>1.260,00</td></tr>
-      <tr><td>7,5</td><td>124,00</td><td>1.350,00</td></tr>
-      <tr><td>8</td><td>120,00</td><td>1.440,00</td></tr>
-      <tr><td>9</td><td>115,00</td><td>1.620,00</td></tr>
-      <tr><td>10</td><td>110,00</td><td>1.800,00</td></tr>
-      <tr><td>11</td><td>105,00</td><td>1.980,00</td></tr>
-      <tr><td>12</td><td>100,00</td><td>2.160,00</td></tr>
-      <tr><td>13</td><td>95,00</td><td>2.340,00</td></tr>
-      <tr><td>14</td><td>90,00</td><td>2.520,00</td></tr>
-      <tr><td>15</td><td>85,00</td><td>2.700,00</td></tr>
-    </table>
-  </div>
+  <!-- Wrapper principal -->
+  <div class="main-wrapper">
+
+    <!-- ========================================= -->
+    <!-- BLOCO ORIGINAL DA CALCULADORA DE PREÇOS  -->
+    <!-- ========================================= -->
+    <div class="container">
+      <div class="header">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSp51OGC2YtYl1F-J8L75fuHK3XhI9l7V898A&s" alt="Logo">
+        <h1>Calculadora de Preços</h1>
+      </div>
+      
+      <div class="input-container">
+        <label>Digite o custo do produto (R$):</label>
+        <input type="number" id="custo" oninput="calcular()" min="0" step="0.01">
+        
+        <label>Digite o valor da mão de obra (R$):</label>
+        <input type="number" id="maoDeObra" oninput="calcular()" min="0" step="0.01">
+        
+        <label>Insira uma margem diferente da atual (%):</label>
+        <input type="number" id="margemManual" oninput="calcular()" min="0" step="0.1">
+      </div>
+
+      <div class="result-container">
+        <table>
+          <tr>
+            <th>Tipo</th>
+            <th>% Margem</th>
+            <th>R$ Margem</th>
+            <th>Preço Final (R$)</th>
+          </tr>
+          <tr>
+            <td>Preço Cheio</td>
+            <td id="margemCheia">-</td>
+            <td id="precoMargemCheio">-</td>
+            <td id="precoCheio">-</td>
+          </tr>
+          <tr>
+            <td>Preço Reduzido (-20%)</td>
+            <td id="margemReduzida">-</td>
+            <td id="precoMargemReduzido">-</td>
+            <td id="precoReduzido">-</td>
+          </tr>
+          <tr id="maoDeObraCheioRow" style="display: none;">
+            <td>Preço Cheio com Instalação</td>
+            <td id="margemCheiaInst">-</td>
+            <td id="precoMargemCheioInst">-</td>
+            <td id="precoCheioInstalacao">-</td>
+          </tr>
+          <tr id="maoDeObraReduzidoRow" style="display: none;">
+            <td>Preço Reduzido com Instalação</td>
+            <td id="margemReduzidaInst">-</td>
+            <td id="precoMargemReduzidoInst">-</td>
+            <td id="precoReduzidoInstalacao">-</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+    <!-- ========================================= -->
+    <!-- FIM DO BLOCO ORIGINAL DA CALCULADORA     -->
+    <!-- ========================================= -->
+
+    <!-- ========================================= -->
+    <!-- BLOCO LATERAL: TABELA DE MÃO DE OBRA     -->
+    <!-- ========================================= -->
+    <div class="tabela-mao-de-obra">
+      <h2>Tabela de Mão de Obra</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Quant. Horas</th>
+            <th>Preço/Hora (R$)</th>
+            <th>Preço Total (R$)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>1</td><td>180,00</td><td>180,00</td></tr>
+          <tr><td>1,5</td><td>175,00</td><td>270,00</td></tr>
+          <tr><td>2</td><td>170,00</td><td>360,00</td></tr>
+          <tr><td>2,5</td><td>165,00</td><td>450,00</td></tr>
+          <tr><td>3</td><td>160,00</td><td>540,00</td></tr>
+          <tr><td>3,5</td><td>155,00</td><td>630,00</td></tr>
+          <tr><td>4</td><td>150,00</td><td>720,00</td></tr>
+          <tr><td>4,5</td><td>146,00</td><td>810,00</td></tr>
+          <tr><td>5</td><td>142,00</td><td>900,00</td></tr>
+          <tr><td>5,5</td><td>138,00</td><td>990,00</td></tr>
+          <tr><td>6</td><td>134,00</td><td>1.080,00</td></tr>
+          <tr><td>6,5</td><td>131,00</td><td>1.170,00</td></tr>
+          <tr><td>7</td><td>127,00</td><td>1.260,00</td></tr>
+          <tr><td>7,5</td><td>124,00</td><td>1.350,00</td></tr>
+          <tr><td>8</td><td>120,00</td><td>1.440,00</td></tr>
+          <tr><td>9</td><td>115,00</td><td>1.620,00</td></tr>
+          <tr><td>10</td><td>110,00</td><td>1.800,00</td></tr>
+          <tr><td>11</td><td>105,00</td><td>1.980,00</td></tr>
+          <tr><td>12</td><td>100,00</td><td>2.160,00</td></tr>
+          <tr><td>13</td><td>95,00</td><td>2.340,00</td></tr>
+          <tr><td>14</td><td>90,00</td><td>2.520,00</td></tr>
+          <tr><td>15</td><td>85,00</td><td>2.700,00</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <!-- ========================================= -->
+    <!-- FIM DO BLOCO LATERAL                      -->
+    <!-- ========================================= -->
+
+  </div> <!-- Fecha .main-wrapper -->
+
+  <script>
+    // Nova tabela custo -> preço base (gradativa) [1,00 --> 300,00 --> 480,00 --> 500,00 --> 700,00 --> 924,00 --> 1000,00 --> 1300,00 --> 10000,00 --> 12887,00 e assim por diante]
+    const precosBase = [
+      { custo: 1.00,   preco: 4.00   },
+      { custo: 2.00,   preco: 7.69   },
+      { custo: 3.00,   preco: 11.39  },
+      { custo: 4.00,   preco: 14.98  },
+      { custo: 5.00,   preco: 18.48  },
+      { custo: 6.00,   preco: 21.88  },
+      { custo: 7.00,   preco: 25.17  },
+      { custo: 8.00,   preco: 28.37  },
+      { custo: 9.00,   preco: 31.47  },
+      { custo: 10.00,  preco: 34.46  },
+      { custo: 12.00,  preco: 40.75  },
+      { custo: 14.00,  preco: 46.85  },
+      { custo: 16.00,  preco: 52.74  },
+      { custo: 18.00,  preco: 58.43  },
+      { custo: 20.00,  preco: 63.92  },
+      { custo: 22.00,  preco: 69.22  },
+      { custo: 24.00,  preco: 74.31  },
+      { custo: 26.00,  preco: 79.20  },
+      { custo: 28.00,  preco: 83.89  },
+      { custo: 30.00,  preco: 88.38  },
+      { custo: 33.00,  preco: 95.57  },
+      { custo: 36.00,  preco: 102.46 },
+      { custo: 39.00,  preco: 109.05 },
+      { custo: 42.00,  preco: 115.34 },
+      { custo: 45.00,  preco: 121.33 },
+      { custo: 48.00,  preco: 127.02 },
+      { custo: 51.00,  preco: 132.40 },
+      { custo: 54.00,  preco: 138.03 },
+      { custo: 57.00,  preco: 143.42 },
+      { custo: 60.00,  preco: 148.57 },
+      { custo: 64.00,  preco: 155.91 },
+      { custo: 68.00,  preco: 162.94 },
+      { custo: 72.00,  preco: 169.64 },
+      { custo: 76.00,  preco: 176.03 },
+      { custo: 80.00,  preco: 182.09 },
+      { custo: 84.00,  preco: 187.84 },
+      { custo: 88.00,  preco: 193.26 },
+      { custo: 92.00,  preco: 198.37 },
+      { custo: 96.00,  preco: 203.15 },
+      { custo: 100.00, preco: 207.62 },
+      { custo: 105.00, preco: 213.80 },
+      { custo: 110.00, preco: 219.58 },
+      { custo: 115.00, preco: 224.96 },
+      { custo: 130.00, preco: 249.10 },
+      { custo: 145.00, preco: 272.04 },
+      { custo: 160.00, preco: 293.78 },
+      { custo: 175.00, preco: 314.33 },
+      { custo: 190.00, preco: 333.67 },
+      { custo: 200.00, preco: 343.23 },
+      { custo: 220.00, preco: 368.75 },
+      { custo: 240.00, preco: 392.68 },
+      { custo: 260.00, preco: 415.00 },
+      { custo: 280.00, preco: 435.72 },
+      { custo: 300.00, preco: 457.85 },
+      { custo: 330.00, preco: 493.73 },
+      { custo: 360.00, preco: 527.82 },
+      { custo: 390.00, preco: 560.10 },
+      { custo: 420.00, preco: 590.58 },
+      { custo: 450.00, preco: 623.77 },
+      { custo: 480.00, preco: 655.75 },
+      { custo: 510.00, preco: 686.54 },
+      { custo: 540.00, preco: 721.52 },
+      { custo: 570.00, preco: 755.91 },
+      { custo: 600.00, preco: 789.69 },
+      { custo: 640.00, preco: 837.22 },
+      { custo: 680.00, preco: 884.10 },
+      { custo: 720.00, preco: 930.35 },
+      { custo: 760.00, preco: 976.72 },
+      { custo: 800.00, preco: 1022.52 },
+      { custo: 850.00, preco: 1080.48 },
+      { custo: 900.00, preco: 1138.64 },
+      { custo: 950.00, preco: 1196.20 },
+      { custo: 1000.00, preco: 1253.15 },
+      { custo: 1050.00, preco: 1310.56 },
+      { custo: 1100.00, preco: 1367.47 },
+      { custo: 1150.00, preco: 1423.88 },
+      { custo: 1200.00, preco: 1480.98 },
+      { custo: 1250.00, preco: 1537.69 },
+      { custo: 1300.00, preco: 1594.00 },
+      { custo: 1350.00, preco: 1649.91 },
+      { custo: 1400.00, preco: 1706.82 },
+      { custo: 1450.00, preco: 1763.42 },
+      { custo: 1500.00, preco: 1819.73 },
+      { custo: 1650.00, preco: 1996.75 },
+      { custo: 1700.00, preco: 2053.86 },
+      { custo: 1750.00, preco: 2110.77 },
+      { custo: 1800.00, preco: 2167.48 },
+      { custo: 1850.00, preco: 2223.98 },
+      { custo: 1900.00, preco: 2282.19 },
+      { custo: 1950.00, preco: 2340.30 },
+      { custo: 2000.00, preco: 2398.31 },
+      { custo: 2500.00, preco: 2995.38 },
+      { custo: 3000.00, preco: 3591.46 },
+      { custo: 3500.00, preco: 4190.04 },
+      { custo: 4000.00, preco: 4788.62 },
+      { custo: 4500.00, preco: 5387.19 },
+      { custo: 5000.00, preco: 5985.77 },
+      { custo: 5500.00, preco: 6584.35 },
+      { custo: 6000.00, preco: 7182.92 },
+      { custo: 6500.00, preco: 7781.50 },
+      { custo: 7000.00, preco: 8380.08 },
+      { custo: 7500.00, preco: 8978.65 },
+      { custo: 8000.00, preco: 9577.23 },
+      { custo: 8500.00, preco: 10175.81 },
+      { custo: 9000.00, preco: 10774.38 },
+      { custo: 9500.00, preco: 11372.96 },
+      { custo: 10000.00, preco: 11971.54 },
+      { custo: 10500.00, preco: 12570.12 },
+      { custo: 11000.00, preco: 13168.69 },
+      { custo: 11500.00, preco: 13767.27 },
+      { custo: 12000.00, preco: 14365.85 }
+    ];
+
+    // Função para forçar o final em \"7,00\", arredondando para cima
+    function fixPrice(valor) {
+      // Exemplo: valor=232.62 => ceil(232.62/10)=ceil(23.262)=24 => 24*10=240 => 240-3=237
+      return Math.ceil(valor / 10) * 10 - 3;
+    }
+
+    // Faz interpolação linear dentro da tabela
+    function calcularPreco(custo, margemManual = null) {
+      if (!custo || custo <= 0) return null;
+
+      // Se custo >= último item da tabela, extrapola com base no ratio do último item
+      if (custo >= precosBase[precosBase.length - 1].custo) {
+        let precoMax = precosBase[precosBase.length - 1].preco;
+        let custoMax = precosBase[precosBase.length - 1].custo;
+        let ratio = precoMax / custoMax;
+        let precoBruto = ratio * custo;
+        let precoCheio = fixPrice(precoBruto);
+        let margemAtual = ((precoCheio - custo) / custo) * 100;
+
+        if (margemManual) {
+          margemAtual = margemManual;
+          let precoTemp = custo * (1 + margemAtual / 100);
+          precoCheio = fixPrice(precoTemp);
+        }
+
+        // -20% na margem
+        let margemReduzida = margemAtual * 0.8;
+        let precoReduzido = fixPrice(custo * (1 + margemReduzida / 100));
+
+        return {
+          precoCheio,
+          precoReduzido,
+          margemAtual: margemAtual.toFixed(2),
+          margemReduzida: margemReduzida.toFixed(2)
+        };
+      }
+
+      // Se custo <= primeiro item da tabela
+      if (custo <= precosBase[0].custo) {
+        let precoBruto = precosBase[0].preco;
+        let precoCheio = fixPrice(precoBruto);
+        let margemAtual = ((precoCheio - custo) / custo) * 100;
+
+        if (margemManual) {
+          margemAtual = margemManual;
+          let precoTemp = custo * (1 + margemAtual / 100);
+          precoCheio = fixPrice(precoTemp);
+        }
+
+        let margemReduzida = margemAtual * 0.8;
+        let precoReduzido = fixPrice(custo * (1 + margemReduzida / 100));
+
+        return {
+          precoCheio,
+          precoReduzido,
+          margemAtual: margemAtual.toFixed(2),
+          margemReduzida: margemReduzida.toFixed(2)
+        };
+      }
+
+      // Caso geral: encontra o intervalo e interpola
+      for (let i = 0; i < precosBase.length - 1; i++) {
+        const atual = precosBase[i];
+        const proximo = precosBase[i + 1];
+
+        if (custo >= atual.custo && custo < proximo.custo) {
+          // Interpolação linear
+          let slope = (proximo.preco - atual.preco) / (proximo.custo - atual.custo);
+          let precoInterpolado = atual.preco + slope * (custo - atual.custo);
+
+          let precoCheio = fixPrice(precoInterpolado);
+          let margemAtual = ((precoCheio - custo) / custo) * 100;
+
+          if (margemManual) {
+            margemAtual = margemManual;
+            let precoTemp = custo * (1 + margemAtual / 100);
+            precoCheio = fixPrice(precoTemp);
+          }
+
+          let margemReduzida = margemAtual * 0.8;
+          let precoReduzido = fixPrice(custo * (1 + margemReduzida / 100));
+
+          return {
+            precoCheio,
+            precoReduzido,
+            margemAtual: margemAtual.toFixed(2),
+            margemReduzida: margemReduzida.toFixed(2)
+          };
+        }
+      }
+      return null;
+    }
+
+    function calcular() {
+      let custo = parseFloat(document.getElementById(\"custo\").value);
+      let maoDeObra = parseFloat(document.getElementById(\"maoDeObra\").value) || 0;
+      let margemManual = parseFloat(document.getElementById(\"margemManual\").value);
+
+      let resultado = calcularPreco(custo, margemManual);
+      if (resultado) {
+        // =============== PREÇO CHEIO ===============
+        // % Margem
+        if (margemManual) {
+          document.getElementById(\"margemCheia\").innerHTML = `<span class='highlight'>${margemManual.toFixed(2)}%</span>`;
+        } else {
+          document.getElementById(\"margemCheia\").innerText = `${resultado.margemAtual}%`;
+        }
+        // R$ Margem
+        document.getElementById(\"precoMargemCheio\").innerText =
+          `R$ ${(resultado.precoCheio - custo).toLocaleString(\"pt-BR\", { minimumFractionDigits: 2 })}`;
+        // Preço Final
+        document.getElementById(\"precoCheio\").innerText =
+          `R$ ${resultado.precoCheio.toLocaleString(\"pt-BR\", { minimumFractionDigits: 2 })}`;
+
+        // =============== PREÇO REDUZIDO ===============
+        // % Margem Reduzida
+        document.getElementById(\"margemReduzida\").innerText = `${resultado.margemReduzida}%`;
+        // R$ Margem Reduzida
+        document.getElementById(\"precoMargemReduzido\").innerText =
+          `R$ ${(resultado.precoReduzido - custo).toLocaleString(\"pt-BR\", { minimumFractionDigits: 2 })}`;
+        // Preço Final Reduzido
+        document.getElementById(\"precoReduzido\").innerText =
+          `R$ ${resultado.precoReduzido.toLocaleString(\"pt-BR\", { minimumFractionDigits: 2 })}`;
+
+        // =============== PREÇOS COM INSTALAÇÃO ===============
+        if (maoDeObra > 0) {
+          document.getElementById(\"maoDeObraCheioRow\").style.display = \"table-row\";
+          document.getElementById(\"maoDeObraReduzidoRow\").style.display = \"table-row\";
+
+          // Preço Cheio com Instalação
+          let precoCheioInst = resultado.precoCheio + maoDeObra;
+          document.getElementById(\"precoCheioInstalacao\").innerText =
+            `R$ ${precoCheioInst.toLocaleString(\"pt-BR\", { minimumFractionDigits: 2 })}`;
+          document.getElementById(\"precoMargemCheioInst\").innerText =
+            `R$ ${(precoCheioInst - custo).toLocaleString(\"pt-BR\", { minimumFractionDigits: 2 })}`;
+          document.getElementById(\"margemCheiaInst\").innerText =
+            `${resultado.margemAtual}%`; // Margem% baseada no custo e preço de venda (sem MO)
+
+          // Preço Reduzido com Instalação
+          let precoReduzidoInst = resultado.precoReduzido + maoDeObra;
+          document.getElementById(\"precoReduzidoInstalacao\").innerText =
+            `R$ ${precoReduzidoInst.toLocaleString(\"pt-BR\", { minimumFractionDigits: 2 })}`;
+          document.getElementById(\"precoMargemReduzidoInst\").innerText =
+            `R$ ${(precoReduzidoInst - custo).toLocaleString(\"pt-BR\", { minimumFractionDigits: 2 })}`;
+          document.getElementById(\"margemReduzidaInst\").innerText =
+            `${resultado.margemReduzida}%`;
+        } else {
+          // Se mão de obra não foi informada, esconde as linhas
+          document.getElementById(\"maoDeObraCheioRow\").style.display = \"none\";
+          document.getElementById(\"maoDeObraReduzidoRow\").style.display = \"none\";
+        }
+      } else {
+        // Limpa os campos se não houver resultado
+        document.getElementById(\"margemCheia\").innerText = \"-\";
+        document.getElementById(\"precoMargemCheio\").innerText = \"-\";
+        document.getElementById(\"precoCheio\").innerText = \"-\";
+
+        document.getElementById(\"margemReduzida\").innerText = \"-\";
+        document.getElementById(\"precoMargemReduzido\").innerText = \"-\";
+        document.getElementById(\"precoReduzido\").innerText = \"-\";
+
+        document.getElementById(\"maoDeObraCheioRow\").style.display = \"none\";
+        document.getElementById(\"maoDeObraReduzidoRow\").style.display = \"none\";
+      }
+    }
+  </script>
 </body>
 </html>
