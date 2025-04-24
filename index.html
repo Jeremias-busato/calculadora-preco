@@ -5,14 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Calculadora de Preços</title>
   <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       font-family: Arial, sans-serif;
-      background-color: #ffffff;
+      background-color: #fff;
       color: #000;
       padding: 20px;
     }
@@ -22,7 +18,6 @@
       justify-content: center;
       align-items: flex-start;
       gap: 20px;
-      width: 100%;
       max-width: 1600px;
       margin: 0 auto;
     }
@@ -33,86 +28,46 @@
       flex-direction: column;
       align-items: center;
     }
-    .header {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 100%;
-      margin-bottom: 10px;
+    .header { display: flex; align-items: center; justify-content: center; margin-bottom: 10px; width: 100%; }
+    .header img { max-height: 60px; margin-right: 10px; }
+    .header h1 { font-size: 24px; }
+    .input-container, .result-container {
+      width: 100%; padding: 10px; border: 2px solid #000; border-radius: 10px; margin: 10px 0; background-color: #fff;
     }
-    .header img {
-      max-height: 60px;
-      margin-right: 10px;
-    }
-    .header h1 {
-      font-size: 24px;
-    }
-    .input-container,
-    .result-container {
-      width: 100%;
-      padding: 10px;
-      border: 2px solid #000;
-      border-radius: 10px;
-      margin: 10px 0;
-      background-color: #fff;
-    }
-    .input-container label {
-      display: block;
-      margin-top: 5px;
-      font-size: 16px;
-      text-align: left;
-    }
+    .input-container label { display: block; margin-top: 5px; font-size: 16px; text-align: left; }
     .input-container input {
-      width: 100%;
-      padding: 8px;
-      font-size: 16px;
-      margin-top: 5px;
-    }
-    .result-container {
-      font-size: 16px;
-      font-weight: bold;
+      width: 100%; padding: 8px; font-size: 16px; margin-top: 5px;
     }
     .result-container table {
-      width: 100%;
-      border-collapse: collapse;
+      width: 100%; border-collapse: collapse; font-size: 14px;
     }
-    .result-container th,
-    .result-container td {
-      border: 1px solid #000;
-      padding: 8px;
-      text-align: center;
-      font-weight: normal;
+    .result-container th, .result-container td {
+      border: 1px solid #000; padding: 8px; text-align: center; font-weight: normal;
     }
-    .result-container th {
-      background-color: #eee;
-    }
-    .highlight {
-      color: #ff6600;
-      font-weight: bold;
-    }
+    .result-container th { background-color: #eee; }
+    .highlight { color: #ff6600; font-weight: bold; }
+    .bold { font-weight: bold; }
     .tabela-mao-de-obra {
-      flex: 0 0 260px;
+      flex: 0 0 240px;
       border: 2px solid #000;
       border-radius: 10px;
       background-color: #f9f9f9;
       padding: 10px;
-      height: fit-content;
       margin-top: 60px;
     }
     .tabela-mao-de-obra h2 {
       text-align: center;
       margin-bottom: 10px;
-      font-size: 16px;
+      font-size: 15px;
     }
     .tabela-mao-de-obra table {
       width: 100%;
-      font-size: 13px;
+      font-size: 12px;
       border-collapse: collapse;
     }
-    .tabela-mao-de-obra th,
-    .tabela-mao-de-obra td {
+    .tabela-mao-de-obra th, .tabela-mao-de-obra td {
       border: 1px solid #000;
-      padding: 6px;
+      padding: 4px;
       text-align: center;
     }
   </style>
@@ -143,30 +98,10 @@
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>Preço Cheio</td>
-              <td id="margemCheia">-</td>
-              <td id="precoMargemCheio">-</td>
-              <td id="precoCheio">-</td>
-            </tr>
-            <tr>
-              <td>Preço Reduzido (-15%)</td>
-              <td id="margemReduzida">-</td>
-              <td id="precoMargemReduzido">-</td>
-              <td id="precoReduzido">-</td>
-            </tr>
-            <tr id="maoDeObraCheioRow" style="display: none; font-weight: bold;">
-              <td>Preço Cheio com Instalação</td>
-              <td id="margemCheiaInst">-</td>
-              <td id="precoMargemCheioInst">-</td>
-              <td id="precoCheioInstalacao">-</td>
-            </tr>
-            <tr id="maoDeObraReduzidoRow" style="display: none;">
-              <td>Preço Reduzido com Instalação</td>
-              <td id="margemReduzidaInst">-</td>
-              <td id="precoMargemReduzidoInst">-</td>
-              <td id="precoReduzidoInstalacao">-</td>
-            </tr>
+            <tr><td>Preço Cheio</td><td id="margemCheia">-</td><td id="precoMargemCheio">-</td><td id="precoCheio">-</td></tr>
+            <tr><td>Preço Reduzido (-15%)</td><td id="margemReduzida">-</td><td id="precoMargemReduzido">-</td><td id="precoReduzido">-</td></tr>
+            <tr id="maoDeObraCheioRow" style="display: none;"><td class="bold">Preço Cheio com Instalação</td><td id="margemCheiaInst">-</td><td id="precoMargemCheioInst">-</td><td id="precoCheioInstalacao">-</td></tr>
+            <tr id="maoDeObraReduzidoRow" style="display: none;"><td>Preço Reduzido com Instalação</td><td id="margemReduzidaInst">-</td><td id="precoMargemReduzidoInst">-</td><td id="precoReduzidoInstalacao">-</td></tr>
           </tbody>
         </table>
       </div>
@@ -174,50 +109,57 @@
     <div class="tabela-mao-de-obra">
       <h2>Tabela de Mão de Obra</h2>
       <table>
-        <thead>
-          <tr>
-            <th>Quant. Horas</th>
-            <th>R$/hora</th>
-            <th>Total (R$)</th>
-          </tr>
-        </thead>
+        <thead><tr><th>Horas</th><th>R$/hora</th><th>Total</th></tr></thead>
         <tbody>
-          <tr><td>1</td><td>180,00</td><td>180,00</td></tr>
-          <tr><td>1,5</td><td>175,00</td><td>262,50</td></tr>
-          <tr><td>2</td><td>170,00</td><td>340,00</td></tr>
-          <tr><td>2,5</td><td>165,00</td><td>412,50</td></tr>
-          <tr><td>3</td><td>160,00</td><td>480,00</td></tr>
-          <tr><td>3,5</td><td>155,00</td><td>542,50</td></tr>
-          <tr><td>4</td><td>150,00</td><td>600,00</td></tr>
-          <tr><td>4,5</td><td>146,00</td><td>657,00</td></tr>
-          <tr><td>5</td><td>142,00</td><td>710,00</td></tr>
-          <tr><td>5,5</td><td>138,00</td><td>759,00</td></tr>
-          <tr><td>6</td><td>134,00</td><td>804,00</td></tr>
-          <tr><td>6,5</td><td>131,00</td><td>851,50</td></tr>
-          <tr><td>7</td><td>127,00</td><td>889,00</td></tr>
-          <tr><td>7,5</td><td>124,00</td><td>930,00</td></tr>
-          <tr><td>8</td><td>120,00</td><td>960,00</td></tr>
-          <tr><td>9</td><td>115,00</td><td>1.035,00</td></tr>
-          <tr><td>10</td><td>110,00</td><td>1.100,00</td></tr>
-          <tr><td>11</td><td>105,00</td><td>1.155,00</td></tr>
-          <tr><td>12</td><td>100,00</td><td>1.200,00</td></tr>
-          <tr><td>13</td><td>95,00</td><td>1.235,00</td></tr>
-          <tr><td>14</td><td>90,00</td><td>1.260,00</td></tr>
-          <tr><td>15</td><td>85,00</td><td>1.275,00</td></tr>
+          <tr><td>1</td><td>180</td><td>180</td></tr>
+          <tr><td>1.5</td><td>175</td><td>262.5</td></tr>
+          <tr><td>2</td><td>170</td><td>340</td></tr>
+          <tr><td>2.5</td><td>165</td><td>412.5</td></tr>
+          <tr><td>3</td><td>160</td><td>480</td></tr>
+          <tr><td>3.5</td><td>155</td><td>542.5</td></tr>
+          <tr><td>4</td><td>150</td><td>600</td></tr>
+          <tr><td>5</td><td>142</td><td>710</td></tr>
+          <tr><td>6</td><td>134</td><td>804</td></tr>
+          <tr><td>7</td><td>127</td><td>889</td></tr>
+          <tr><td>8</td><td>120</td><td>960</td></tr>
+          <tr><td>9</td><td>115</td><td>1035</td></tr>
+          <tr><td>10</td><td>110</td><td>1100</td></tr>
         </tbody>
       </table>
     </div>
   </div>
+
   <script>
+    const precosBase = [
+      { custo: 1.00, preco: 4.00 },
+      { custo: 1000.00, preco: 1321.15 },
+      { custo: 1200.00, preco: 1585.38 }
+    ];
     function fixPrice(valor) {
       return Math.ceil(valor / 10) * 10 - 3;
     }
     function calcularPreco(custo, margemManual = null) {
       if (!custo || custo <= 0) return null;
-      let precoCheio = margemManual ? fixPrice(custo * (1 + margemManual / 100)) : fixPrice(custo * 2);
-      let margemAtual = margemManual || 100;
-      let margemReduzida = margemAtual * 0.85;
-      let precoReduzido = fixPrice(custo * (1 + margemReduzida / 100));
+      let anterior, proximo;
+      for (let i = 0; i < precosBase.length - 1; i++) {
+        if (custo >= precosBase[i].custo && custo <= precosBase[i+1].custo) {
+          anterior = precosBase[i];
+          proximo = precosBase[i+1];
+          break;
+        }
+      }
+      if (!anterior) anterior = precosBase[0];
+      if (!proximo) proximo = precosBase[precosBase.length - 1];
+      const slope = (proximo.preco - anterior.preco) / (proximo.custo - anterior.custo);
+      let precoInterpolado = anterior.preco + slope * (custo - anterior.custo);
+      let precoCheio = fixPrice(precoInterpolado);
+      let margemAtual = ((precoCheio - custo) / custo) * 100;
+      if (margemManual) {
+        margemAtual = margemManual;
+        precoCheio = fixPrice(custo * (1 + margemAtual / 100));
+      }
+      const margemReduzida = margemAtual * 0.85;
+      const precoReduzido = fixPrice(custo * (1 + margemReduzida / 100));
       return {
         precoCheio,
         precoReduzido,
@@ -226,32 +168,29 @@
       };
     }
     function calcular() {
-      let custo = parseFloat(document.getElementById("custo").value);
-      let maoDeObra = parseFloat(document.getElementById("maoDeObra").value) || 0;
-      let margemManual = parseFloat(document.getElementById("margemManual").value);
-      let resultado = calcularPreco(custo, margemManual);
-      if (resultado) {
-        document.getElementById("margemCheia").innerHTML = margemManual ? `<span class='highlight'>${margemManual.toFixed(2)}%</span>` : `${resultado.margemAtual}%`;
-        document.getElementById("precoMargemCheio").innerText = `R$ ${(resultado.precoCheio - custo).toFixed(2)}`;
-        document.getElementById("precoCheio").innerText = `R$ ${resultado.precoCheio.toFixed(2)}`;
-        document.getElementById("margemReduzida").innerText = `${resultado.margemReduzida}%`;
-        document.getElementById("precoMargemReduzido").innerText = `R$ ${(resultado.precoReduzido - custo).toFixed(2)}`;
-        document.getElementById("precoReduzido").innerText = `R$ ${resultado.precoReduzido.toFixed(2)}`;
-        if (maoDeObra > 0) {
-          document.getElementById("maoDeObraCheioRow").style.display = "table-row";
-          document.getElementById("maoDeObraReduzidoRow").style.display = "table-row";
-          let precoCheioInst = resultado.precoCheio + maoDeObra;
-          document.getElementById("precoCheioInstalacao").innerHTML = `<span class='highlight'>R$ ${precoCheioInst.toFixed(2)}</span>`;
-          document.getElementById("precoMargemCheioInst").innerText = `R$ ${(precoCheioInst - custo).toFixed(2)}`;
-          document.getElementById("margemCheiaInst").innerText = `${resultado.margemAtual}%`;
-          let precoReduzidoInst = resultado.precoReduzido + maoDeObra;
-          document.getElementById("precoReduzidoInstalacao").innerText = `R$ ${precoReduzidoInst.toFixed(2)}`;
-          document.getElementById("precoMargemReduzidoInst").innerText = `R$ ${(precoReduzidoInst - custo).toFixed(2)}`;
-          document.getElementById("margemReduzidaInst").innerText = `${resultado.margemReduzida}%`;
-        } else {
-          document.getElementById("maoDeObraCheioRow").style.display = "none";
-          document.getElementById("maoDeObraReduzidoRow").style.display = "none";
-        }
+      const custo = parseFloat(document.getElementById('custo').value);
+      const maoDeObra = parseFloat(document.getElementById('maoDeObra').value) || 0;
+      const margemManual = parseFloat(document.getElementById('margemManual').value);
+      const r = calcularPreco(custo, margemManual);
+      if (!r) return;
+      document.getElementById('margemCheia').innerText = `${r.margemAtual}%`;
+      document.getElementById('precoMargemCheio').innerText = `R$ ${(r.precoCheio - custo).toFixed(2)}`;
+      document.getElementById('precoCheio').innerText = `R$ ${r.precoCheio.toFixed(2)}`;
+      document.getElementById('margemReduzida').innerText = `${r.margemReduzida}%`;
+      document.getElementById('precoMargemReduzido').innerText = `R$ ${(r.precoReduzido - custo).toFixed(2)}`;
+      document.getElementById('precoReduzido').innerText = `R$ ${r.precoReduzido.toFixed(2)}`;
+      if (maoDeObra > 0) {
+        document.getElementById('maoDeObraCheioRow').style.display = 'table-row';
+        document.getElementById('maoDeObraReduzidoRow').style.display = 'table-row';
+        document.getElementById('precoCheioInstalacao').innerText = `R$ ${(r.precoCheio + maoDeObra).toFixed(2)}`;
+        document.getElementById('precoMargemCheioInst').innerText = `R$ ${(r.precoCheio + maoDeObra - custo).toFixed(2)}`;
+        document.getElementById('margemCheiaInst').innerText = `${r.margemAtual}%`;
+        document.getElementById('precoReduzidoInstalacao').innerText = `R$ ${(r.precoReduzido + maoDeObra).toFixed(2)}`;
+        document.getElementById('precoMargemReduzidoInst').innerText = `R$ ${(r.precoReduzido + maoDeObra - custo).toFixed(2)}`;
+        document.getElementById('margemReduzidaInst').innerText = `${r.margemReduzida}%`;
+      } else {
+        document.getElementById('maoDeObraCheioRow').style.display = 'none';
+        document.getElementById('maoDeObraReduzidoRow').style.display = 'none';
       }
     }
   </script>
