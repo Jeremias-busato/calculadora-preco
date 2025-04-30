@@ -191,7 +191,7 @@
         document.getElementById("precoCheioInstalacao").innerText = "R$ " + precoCheioInstalacao.toFixed(2);
         document.getElementById("precoReduzidoInstalacao").innerText = "R$ " + precoReduzidoInstalacao.toFixed(2);
 
-        // Calcular margens com instalação
+        // Calcular margens com instalação corretamente
         let margemCheiaInst = ((precoCheioInstalacao - custo - maoDeObra) / (custo + maoDeObra)) * 100;
         let margemReduzidaInst = ((precoReduzidoInstalacao - custo - maoDeObra) / (custo + maoDeObra)) * 100;
 
