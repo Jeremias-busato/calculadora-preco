@@ -147,6 +147,7 @@
       [1,4],[2,7.69],[3,11.43],[4,15.10],[5,18.71],
       [10,35.66],[20,67.82],[50,136.85],[100,251.62],[200,365.23],[300,475.85],[400,576.46],[500,686.58],[1000,1321.15],[2000,2642.31],[3000,3963.46],[4000,5284.62],[5000,6605.77],[6000,7926.92],[7000,9248.08],[8000,10569.23],[9000,11890.38],[10000,13211.54],[12000,15853.85]
     ];
+
     function interpolar(x) {
       for (let i = 0; i < tabela.length - 1; i++) {
         const [x1, y1] = tabela[i];
@@ -155,32 +156,47 @@
       }
       return tabela[tabela.length - 1][1] * (x / tabela[tabela.length - 1][0]);
     }
+
     function calcular() {
       let custo = parseFloat(document.getElementById("custo").value);
       let maoDeObra = parseFloat(document.getElementById("maoDeObra").value) || 0;
       let margemManual = parseFloat(document.getElementById("margemManual").value);
       if (!custo || custo <= 0) return;
-      let precoCheio = margemManual ? custo * (1 + margemManual/100) : interpolar(custo);
+
+      // Calcular preço cheio e preço reduzido
+      let precoCheio = margemManual ? custo * (1 + margemManual / 100) : interpolar(custo);
       precoCheio = Math.ceil(precoCheio / 10) * 10 - 3;
       let margemAtual = ((precoCheio - custo) / custo) * 100;
       let margemReduzida = margemAtual * 0.85;
       let precoReduzido = custo * (1 + margemReduzida / 100);
       precoReduzido = Math.ceil(precoReduzido / 10) * 10 - 3;
-      document.getElementById("margemCheia").innerText = margemManual ? margemManual.toFixed(2)+'%' : margemAtual.toFixed(2)+'%';
+
+      // Exibir resultados de preço cheio e preço reduzido
+      document.getElementById("margemCheia").innerText = margemManual ? margemManual.toFixed(2) + '%' : margemAtual.toFixed(2) + '%';
       document.getElementById("precoMargemCheio").innerText = "R$ " + (precoCheio - custo).toFixed(2);
       document.getElementById("precoCheio").innerText = "R$ " + precoCheio.toFixed(2);
-      document.getElementById("margemReduzida").innerText = margemReduzida.toFixed(2)+'%';
+      document.getElementById("margemReduzida").innerText = margemReduzida.toFixed(2) + '%';
       document.getElementById("precoMargemReduzido").innerText = "R$ " + (precoReduzido - custo).toFixed(2);
       document.getElementById("precoReduzido").innerText = "R$ " + precoReduzido.toFixed(2);
+
+      // Calcular preço com instalação
       if (maoDeObra > 0) {
         document.getElementById("maoDeObraCheioRow").style.display = 'table-row';
         document.getElementById("maoDeObraReduzidoRow").style.display = 'table-row';
-        document.getElementById("precoCheioInstalacao").innerText = "R$ " + (precoCheio + maoDeObra).toFixed(2);
-        document.getElementById("precoMargemCheioInst").innerText = "R$ " + (precoCheio + maoDeObra - custo).toFixed(2);
-        document.getElementById("margemCheiaInst").innerText = margemAtual.toFixed(2)+'%';
-        document.getElementById("precoReduzidoInstalacao").innerText = "R$ " + (precoReduzido + maoDeObra).toFixed(2);
-        document.getElementById("precoMargemReduzidoInst").innerText = "R$ " + (precoReduzido + maoDeObra - custo).toFixed(2);
-        document.getElementById("margemReduzidaInst").innerText = margemReduzida.toFixed(2)+'%';
+
+        let precoCheioInstalacao = precoCheio + maoDeObra;
+        let precoReduzidoInstalacao = precoReduzido + maoDeObra;
+
+        // Atualizar resultados de preço com instalação
+        document.getElementById("precoCheioInstalacao").innerText = "R$ " + precoCheioInstalacao.toFixed(2);
+        document.getElementById("precoReduzidoInstalacao").innerText = "R$ " + precoReduzidoInstalacao.toFixed(2);
+
+        // Calcular margens com instalação
+        let margemCheiaInst = ((precoCheioInstalacao - custo - maoDeObra) / (custo + maoDeObra)) * 100;
+        let margemReduzidaInst = ((precoReduzidoInstalacao - custo - maoDeObra) / (custo + maoDeObra)) * 100;
+
+        document.getElementById("margemCheiaInst").innerText = margemCheiaInst.toFixed(2) + '%';
+        document.getElementById("margemReduzidaInst").innerText = margemReduzidaInst.toFixed(2) + '%';
       } else {
         document.getElementById("maoDeObraCheioRow").style.display = 'none';
         document.getElementById("maoDeObraReduzidoRow").style.display = 'none';
