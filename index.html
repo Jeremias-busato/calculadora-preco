@@ -118,8 +118,8 @@
           <tbody>
             <tr><td>Preço Cheio</td><td id="margemCheia">-</td><td id="precoMargemCheio">-</td><td id="precoCheio">-</td></tr>
             <tr><td>Preço Reduzido (-15%)</td><td id="margemReduzida">-</td><td id="precoMargemReduzido">-</td><td id="precoReduzido">-</td></tr>
-            <tr id="maoDeObraCheioRow" style="display: none; font-weight:bold;"><td>Preço Cheio com Instalação</td><td id="margemCheiaInst">-</td><td id="precoMargemCheioInst">-</td><td id="precoCheioInstalacao">-</td></tr>
-            <tr id="maoDeObraReduzidoRow" style="display: none;"><td>Preço Reduzido com Instalação</td><td id="margemReduzidaInst">-</td><td id="precoMargemReduzidoInst">-</td><td id="precoReduzidoInstalacao">-</td></tr>
+            <tr id="maoDeObraCheioRow" style="display: none; font-weight:bold;"><td>Preço Cheio com Instalação</td><td id="margemCheiaInst">-</td><td id="precoMargemCheioInst">-</td><td id="precoCheioInstalacao" class="highlight">-</td></tr>
+            <tr id="maoDeObraReduzidoRow" style="display: none;"><td>Preço Reduzido com Instalação</td><td id="margemReduzidaInst">-</td><td id="precoMargemReduzidoInst">-</td><td id="precoReduzidoInstalacao" class="highlight">-</td></tr>
           </tbody>
         </table>
       </div>
@@ -162,7 +162,8 @@
       if (!custo || custo <= 0) return;
       let precoCheio = margemManual ? custo * (1 + margemManual/100) : interpolar(custo);
       precoCheio = Math.ceil(precoCheio / 10) * 10 - 3;
-      let margemAtual = ((precoCheio - custo) / custo) * 100;
+      let custoComInstalacao = custo + maoDeObra;
+      let margemAtual = ((precoCheio - custoComInstalacao) / custoComInstalacao) * 100;
       let margemReduzida = margemAtual * 0.85;
       let precoReduzido = custo * (1 + margemReduzida / 100);
       precoReduzido = Math.ceil(precoReduzido / 10) * 10 - 3;
