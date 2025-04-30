@@ -162,8 +162,7 @@
       if (!custo || custo <= 0) return;
       let precoCheio = margemManual ? custo * (1 + margemManual/100) : interpolar(custo);
       precoCheio = Math.ceil(precoCheio / 10) * 10 - 3;
-      let custoComInstalacao = custo + maoDeObra;
-      let margemAtual = ((precoCheio - custoComInstalacao) / custoComInstalacao) * 100;
+      let margemAtual = ((precoCheio - custo) / custo) * 100;
       let margemReduzida = margemAtual * 0.85;
       let precoReduzido = custo * (1 + margemReduzida / 100);
       precoReduzido = Math.ceil(precoReduzido / 10) * 10 - 3;
