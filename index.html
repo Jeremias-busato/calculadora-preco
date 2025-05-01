@@ -197,8 +197,8 @@
 
         document.getElementById("margemCheiaInst").innerText = margemCheiaInst.toFixed(2) + '%';
         document.getElementById("margemReduzidaInst").innerText = margemReduzidaInst.toFixed(2) + '%';
-        document.getElementById("precoMargemCheioInst").innerText = "R$ " + (precoCheioInstalacao - custo - maoDeObra).toFixed(2);
-        document.getElementById("precoMargemReduzidoInst").innerText = "R$ " + (precoReduzidoInstalacao - custo - maoDeObra).toFixed(2);
+        document.getElementById("precoMargemCheioInst").innerText = "R$ " + (precoCheioInstalacao - custo).toFixed(2);
+        document.getElementById("precoMargemReduzidoInst").innerText = "R$ " + (precoReduzidoInstalacao - custo).toFixed(2);
       } else {
         document.getElementById("maoDeObraCheioRow").style.display = 'none';
         document.getElementById("maoDeObraReduzidoRow").style.display = 'none';
