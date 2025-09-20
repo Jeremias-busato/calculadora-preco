@@ -86,7 +86,7 @@
     .tabela-mao-de-obra table {
       width: 100%;
       font-size: 12px;
-      border-collapse: collapse;
+      border-collapse: collapse.
     }
     .tabela-mao-de-obra th, .tabela-mao-de-obra td {
       border: 1px solid #000;
@@ -143,17 +143,13 @@
   </div>
 
   <script>
-    const tabela = [
-      <script>
-// --- SUBSTITUA o bloco "const tabela = [...]" pelo trecho abaixo ---
+    // Converte número no formato PT-BR (milhar com ponto, decimal com vírgula) para Number
+    function brToNumber(s) {
+      return parseFloat(s.replace(/\./g, '').replace(',', '.'));
+    }
 
-// Converte número no formato PT-BR (milhar com ponto, decimal com vírgula) para Number
-function brToNumber(s) {
-  return parseFloat(s.replace(/\./g, '').replace(',', '.'));
-}
-
-// Sua nova curva (coluna Custo e coluna Venda), exatamente como você passou
-const tabelaCSV = `
+    // --- CURVA NOVA (Custo x Venda), exatamente como você enviou ---
+    const tabelaCSV = `
 1,00 4,10
 2,00 7,88
 3,00 11,72
@@ -421,24 +417,23 @@ const tabelaCSV = `
 12.000,00 17.007,69
 `;
 
-// Monta a tabela numérica [custo, venda] a partir do texto acima
-const tabela = tabelaCSV
-  .trim()
-  .split('\n')
-  .map(linha => {
-    const [custoStr, vendaStr] = linha.trim().split(/\s+/);
-    return [brToNumber(custoStr), brToNumber(vendaStr)];
-  });
+    // Monta a tabela numérica [custo, venda] a partir do texto acima
+    const tabela = tabelaCSV
+      .trim()
+      .split('\n')
+      .map(linha => {
+        const [custoStr, vendaStr] = linha.trim().split(/\s+/);
+        return [brToNumber(custoStr), brToNumber(vendaStr)];
+      });
 
-// --- FIM do bloco de substituição ---
-</script>
-
+    // Interpolação linear (com extrapolação proporcional acima do último ponto)
     function interpolar(x) {
       for (let i = 0; i < tabela.length - 1; i++) {
         const [x1, y1] = tabela[i];
         const [x2, y2] = tabela[i+1];
         if (x >= x1 && x <= x2) return y1 + (y2 - y1) * ((x - x1) / (x2 - x1));
       }
+      // extrapola proporcionalmente a partir do último ponto
       return tabela[tabela.length - 1][1] * (x / tabela[tabela.length - 1][0]);
     }
 
@@ -448,18 +443,23 @@ const tabela = tabelaCSV
       let margemManual = parseFloat(document.getElementById("margemManual").value);
       if (!custo || custo <= 0) return;
 
-      // Calcular preço cheio e preço reduzido
+      // Preço cheio: usa margem manual se fornecida, senão usa a curva por interpolação
       let precoCheio = margemManual ? custo * (1 + margemManual / 100) : interpolar(custo);
+      // Arredonda para terminar em 7 (ceil para a próxima dezena, menos 3 -> ...7)
       precoCheio = Math.ceil(precoCheio / 10) * 10 - 3;
+
       let margemAtual = ((precoCheio - custo) / custo) * 100;
+
+      // Redução de margem em 15% (mantida como já estava)
       let margemReduzida = margemAtual * 0.85;
       let precoReduzido = custo * (1 + margemReduzida / 100);
       precoReduzido = Math.ceil(precoReduzido / 10) * 10 - 3;
 
-      // Exibir resultados de preço cheio e preço reduzido
+      // Exibir resultados de preço cheio e reduzido
       document.getElementById("margemCheia").innerText = margemManual ? margemManual.toFixed(2) + '%' : margemAtual.toFixed(2) + '%';
       document.getElementById("precoMargemCheio").innerText = "R$ " + (precoCheio - custo).toFixed(2);
       document.getElementById("precoCheio").innerText = "R$ " + precoCheio.toFixed(2);
+
       document.getElementById("margemReduzida").innerText = margemReduzida.toFixed(2) + '%';
       document.getElementById("precoMargemReduzido").innerText = "R$ " + (precoReduzido - custo).toFixed(2);
       document.getElementById("precoReduzido").innerText = "R$ " + precoReduzido.toFixed(2);
@@ -472,11 +472,9 @@ const tabela = tabelaCSV
         let precoCheioInstalacao = precoCheio + maoDeObra;
         let precoReduzidoInstalacao = precoReduzido + maoDeObra;
 
-        // Atualizar resultados de preço com instalação
         document.getElementById("precoCheioInstalacao").innerText = "R$ " + precoCheioInstalacao.toFixed(2);
         document.getElementById("precoReduzidoInstalacao").innerText = "R$ " + precoReduzidoInstalacao.toFixed(2);
 
-        // Calcular margens com instalação corretamente
         let margemCheiaInst = ((precoCheioInstalacao - custo) / custo) * 100;
         let margemReduzidaInst = ((precoReduzidoInstalacao - custo) / custo) * 100;
 
